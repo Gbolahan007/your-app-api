@@ -1,6 +1,10 @@
 import { HiOutlineXMark } from "react-icons/hi2";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import { TiHomeOutline } from "react-icons/ti";
+import { AiOutlineProduct } from "react-icons/ai";
+import { RiContactsBookLine } from "react-icons/ri";
+import { BiLogIn } from "react-icons/bi";
 
 function HamburgerMenu({ isOpenModal, setIsOpenModal }) {
   const navigate = useNavigate();
@@ -44,9 +48,9 @@ function HamburgerMenu({ isOpenModal, setIsOpenModal }) {
                     navigate("/");
                     setIsOpenModal(false);
                   }}
-                  className="block w-full p-3 text-blue-600 transition hover:text-green-600"
+                  className="flex w-full items-center gap-5 p-3 text-blue-600 transition hover:text-green-600"
                 >
-                  Home
+                  <TiHomeOutline size={27} /> Home
                 </button>
               </li>
               <li>
@@ -55,9 +59,9 @@ function HamburgerMenu({ isOpenModal, setIsOpenModal }) {
                     navigate("/products");
                     setIsOpenModal(false);
                   }}
-                  className="block w-full p-3 text-blue-600 transition hover:text-green-600"
+                  className="flex w-full items-center gap-5 p-3 text-blue-600 transition hover:text-green-600"
                 >
-                  Products
+                  <AiOutlineProduct size={27} /> Products
                 </button>
               </li>
               <li>
@@ -66,9 +70,9 @@ function HamburgerMenu({ isOpenModal, setIsOpenModal }) {
                     navigate("/contact");
                     setIsOpenModal(false);
                   }}
-                  className="block w-full p-3 text-blue-600 transition hover:text-green-600"
+                  className="flex w-full items-center gap-5 p-3 text-blue-600 transition hover:text-green-600"
                 >
-                  Contact
+                  <RiContactsBookLine size={27} /> Contact
                 </button>
               </li>
               <li>
@@ -77,9 +81,9 @@ function HamburgerMenu({ isOpenModal, setIsOpenModal }) {
                     navigate("/login");
                     setIsOpenModal(false);
                   }}
-                  className="block w-full p-3 text-blue-600 transition hover:text-green-600"
+                  className="flex w-full items-center gap-5 p-3 text-blue-600 transition hover:text-green-600"
                 >
-                  Login
+                  <BiLogIn size={27} /> Login
                 </button>
               </li>
             </ul>

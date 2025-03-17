@@ -1,9 +1,9 @@
 import { motion } from "framer-motion";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
+import { useNavigate } from "react-router-dom";
 import "swiper/css";
 import "swiper/css/navigation";
-import { useNavigate } from "react-router-dom";
 
 function FeaturedCategory() {
   const navigate = useNavigate();
@@ -19,15 +19,15 @@ function FeaturedCategory() {
       className="my-10 text-center"
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, delay: 0.5 }}
+      transition={{ duration: 0.8 }}
       viewport={{ once: true }}
     >
       <h1 className="text-3xl font-bold text-gray-900 underline decoration-green-500">
         Featured Categories
       </h1>
 
-      {/* 🔹 Desktop Grid View */}
-      <div className="mx-auto hidden max-w-7xl grid-cols-2 gap-8 p-6 sm:grid md:grid-cols-4">
+      {/* 🔹 Large Screens (Grid Layout) */}
+      <div className="mx-auto hidden max-w-7xl grid-cols-2 gap-8 p-6 md:hidden lg:grid lg:grid-cols-4">
         {categories.map((item, index) => (
           <div
             key={index}
@@ -46,15 +46,16 @@ function FeaturedCategory() {
         ))}
       </div>
 
-      {/* 🔹 Mobile Swiper View */}
-      <div className="mx-5 sm:hidden">
+      {/* 🔹 Medium & Small Screens (SwiperJS) */}
+      <div className="mx-5 md:block lg:hidden">
         <Swiper
           modules={[Navigation]}
           spaceBetween={20}
           slidesPerView={1}
           navigation
           breakpoints={{
-            480: { slidesPerView: 2.2 },
+            480: { slidesPerView: 2.2 }, // Small screens → 2.2 slides per view
+            768: { slidesPerView: 3 }, // Medium screens → 3 slides per view
           }}
         >
           {categories.map((item, index) => (
