@@ -1,5 +1,6 @@
 import { lazy, Suspense } from "react";
 import Loader from "../Loader";
+import StickyButton from "../StickyButton";
 
 const HeroSection = lazy(() => import("../HeroSection"));
 const BrandDescription = lazy(() => import("../BrandDescription"));
@@ -15,6 +16,7 @@ function Home() {
         <FeaturedCategory />
         <BestSeller />
       </Suspense>
+      <StickyButton />
     </div>
   );
 }

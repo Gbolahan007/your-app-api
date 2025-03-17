@@ -10,7 +10,7 @@ function BestSeller() {
   return (
     <div className="mx-auto max-w-7xl px-4 py-10">
       {/* Section Heading */}
-      <h2 className="mb-8 text-center text-3xl font-bold text-gray-800">
+      <h2 className="relative mx-auto mb-12 text-center text-3xl font-bold tracking-tight text-gray-900 after:absolute after:-bottom-4 after:left-1/2 after:h-1 after:w-24 after:-translate-x-1/2 after:rounded-full after:bg-blue-600 md:text-4xl">
         Best Sellers
       </h2>
 
