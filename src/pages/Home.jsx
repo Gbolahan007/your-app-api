@@ -4,6 +4,7 @@ import Loader from "../Loader";
 const HeroSection = lazy(() => import("../HeroSection"));
 const BrandDescription = lazy(() => import("../BrandDescription"));
 const FeaturedCategory = lazy(() => import("../FeaturedCategory"));
+const BestSeller = lazy(() => import("../BestSeller"));
 
 function Home() {
   return (
@@ -12,6 +13,7 @@ function Home() {
         <HeroSection />
         <BrandDescription />
         <FeaturedCategory />
+        <BestSeller />
       </Suspense>
     </div>
   );
