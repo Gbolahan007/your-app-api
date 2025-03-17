@@ -39,7 +39,7 @@ function HeaderNav() {
                 : "px-4 py-2 text-green-500 transition duration-300 ease-in-out hover:text-green-700"
             }
           >
-            Contact Us
+            Contact
           </NavLink>
         </li>
       </ul>
