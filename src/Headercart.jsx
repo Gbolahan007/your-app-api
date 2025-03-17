@@ -1,8 +1,10 @@
 import { FiShoppingCart } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
 
 function HeaderCart() {
+  const navigate = useNavigate();
   return (
-    <div className="relative">
+    <div className="relative cursor-pointer" onClick={() => navigate("/cart")}>
       {/* Cart Icon */}
       <FiShoppingCart size={28} className="text-blue-800" />
 

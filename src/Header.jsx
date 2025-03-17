@@ -4,37 +4,60 @@ import HeaderNav from "./HeaderNav";
 import HeaderSearch from "./HeaderSearch";
 import Login from "./Login";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import HamburgerMenu from "./HamburgerMenu";
+import { AnimatePresence } from "framer-motion";
 
 function Header() {
+  const [isOpenModal, setIsOpenModal] = useState(false);
   const navigate = useNavigate();
+
   return (
-    <nav className="flex items-center justify-between bg-gray-200 p-2 md:justify-center lg:justify-around">
-      {/* Logo */}
-      <div className="w-20 cursor-pointer" onClick={() => navigate("/home")}>
-        <img src="/seem-logo.jpg" className="h-full w-full" alt="seem logo" />
-      </div>
-
-      {/* Main Navigation - Hidden on Small Screens */}
-      <main className="hidden w-full max-w-screen-md items-center justify-center gap-8 md:flex">
-        <HeaderNav />
-        <div className="flex items-center justify-center gap-5">
-          {/* Search - Hidden on md Screens */}
-          <div className="hidden lg:block">
-            <HeaderSearch />
-          </div>
-
-          <Login />
-          <Headercart />
+    <>
+      {/* Navigation Bar */}
+      <nav className="sticky left-0 top-0 z-50 flex w-full items-center justify-between bg-gray-200 shadow-md md:justify-center lg:justify-around">
+        {/* Logo */}
+        <div className="w-20 cursor-pointer" onClick={() => navigate("/home")}>
+          <img src="/seem-logo.jpg" className="h-full w-full" alt="seem logo" />
         </div>
-      </main>
 
-      {/* Mobile Menu Button */}
-      <div className="absolute right-4 top-3 cursor-pointer sm:hidden">
-        <button>
-          <HiOutlineBars4 size={27} />
-        </button>
-      </div>
-    </nav>
+        {/* Main Navigation - Hidden on Small Screens */}
+        <main className="hidden w-full max-w-screen-md items-center justify-center gap-8 md:flex">
+          <HeaderNav />
+          <div className="flex items-center justify-center gap-5">
+            {/* Search - Hidden on md Screens */}
+            <div className="hidden lg:block">
+              <HeaderSearch />
+            </div>
+
+            <Login />
+            <Headercart />
+          </div>
+        </main>
+
+        {/* Mobile Menu Button */}
+        <div className="sm:hidden">
+          <button
+            onClick={() => setIsOpenModal(true)}
+            className="rounded-md p-2 transition hover:bg-gray-300"
+          >
+            <HiOutlineBars4 size={27} />
+          </button>
+        </div>
+      </nav>
+
+      {/* Hamburger Menu - Placed Outside <nav> to Prevent Layout Shift */}
+      <AnimatePresence>
+        {isOpenModal && (
+          <div className="absolute inset-0 z-50">
+            <HamburgerMenu
+              isOpenModal={isOpenModal}
+              setIsOpenModal={setIsOpenModal}
+            />
+          </div>
+        )}
+      </AnimatePresence>
+    </>
   );
 }
 
