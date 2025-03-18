@@ -36,10 +36,10 @@ function ProductList() {
     );
   }
 
-  // Filter by country - only apply when category is badges
+  // Filter by country
   if (selectedCountry !== "all") {
     filteredProducts = filteredProducts.filter(
-      (product) => product.country.toLowerCase() === selectedCountry,
+      (product) => product.country?.trim().toLowerCase() === selectedCountry,
     );
   }
   console.log(filteredProducts);
