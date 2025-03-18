@@ -37,12 +37,12 @@ function ProductList() {
   }
 
   // Filter by country - only apply when category is badges
-  if (selectedCountry !== "all" && selectedCategory === "badges") {
+  if (selectedCountry !== "all") {
     filteredProducts = filteredProducts.filter(
       (product) => product.country.toLowerCase() === selectedCountry,
     );
   }
-
+  console.log(filteredProducts);
   return (
     <div className="container mx-auto">
       <h1 className="mb-6 text-3xl font-bold text-green-600">Our Products</h1>
