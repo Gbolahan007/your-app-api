@@ -1,6 +1,6 @@
 import { useSearchParams } from "react-router-dom";
+import { useProducts } from "../src/pages/useProducts";
 import Loader from "./Loader";
-import { useProducts } from "./pages/useProducts";
 
 function formatCurrency(price) {
   return new Intl.NumberFormat("en-US", {
@@ -36,16 +36,21 @@ function ProductList() {
     );
   }
 
-  // Filter by country
-  if (selectedCountry !== "all") {
+  // Filter by country - only apply when category is badges
+  if (selectedCountry !== "all" && selectedCategory === "badges") {
     filteredProducts = filteredProducts.filter(
-      (product) => product.country?.trim().toLowerCase() === selectedCountry,
+      (product) => product.country.toLowerCase() === selectedCountry,
     );
   }
-  console.log(filteredProducts);
+
+  // Log the filtered products count
+  console.log(`Filtered products count: ${filteredProducts.length}`);
+
   return (
     <div className="container mx-auto">
-      <h1 className="mb-6 text-3xl font-bold text-green-600">Our Products</h1>
+      <h1 className="mb-6 text-3xl font-bold text-green-600">
+        Our Products ({filteredProducts.length})
+      </h1>
 
       {/* Product List */}
       <div className="mt-4 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
@@ -66,9 +71,7 @@ function ProductList() {
                 Category: {product.category}
               </p>
 
-              <p className="mb-2 text-sm text-gray-700">
-                {product.description}
-              </p>
+              <p className="text-sm text-gray-700">{product.description}</p>
               <p className="text-lg font-bold text-green-600">
                 {formatCurrency(product.price)}
               </p>
