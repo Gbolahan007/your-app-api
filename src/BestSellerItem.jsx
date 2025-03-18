@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+
 function formatCurrency(price) {
   return new Intl.NumberFormat("en-US", {
     style: "currency",
@@ -5,8 +7,12 @@ function formatCurrency(price) {
   }).format(price);
 }
 function BestSellerItem({ item }) {
+  const navigate = useNavigate();
   return (
-    <div className="group cursor-pointer rounded-xl bg-white p-4 shadow-md transition-all duration-300 hover:shadow-lg">
+    <div
+      onClick={() => navigate("/products")}
+      className="group cursor-pointer rounded-xl bg-white p-4 shadow-md transition-all duration-300 hover:shadow-lg"
+    >
       {/* Product Image */}
       <div className="overflow-hidden rounded-lg">
         <img
