@@ -43,9 +43,6 @@ function ProductList() {
     );
   }
 
-  // Log the filtered products count
-  console.log(`Filtered products count: ${filteredProducts.length}`);
-
   return (
     <div className="container mx-auto">
       <h1 className="mb-6 text-3xl font-bold text-green-600">
