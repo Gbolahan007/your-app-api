@@ -1,5 +1,4 @@
 import { NavLink } from "react-router-dom";
-
 function HeaderNav() {
   return (
     <nav className="rounded-lg bg-gray-100 p-4 font-semibold shadow-md">
@@ -16,7 +15,6 @@ function HeaderNav() {
             Home
           </NavLink>
         </li>
-
         <li>
           <NavLink
             to="/products"
@@ -29,7 +27,6 @@ function HeaderNav() {
             Products
           </NavLink>
         </li>
-
         <li>
           <NavLink
             to="/contact"
@@ -46,5 +43,4 @@ function HeaderNav() {
     </nav>
   );
 }
-
 export default HeaderNav;

@@ -1,9 +1,9 @@
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
 function HeroSection() {
   const navigate = useNavigate();
 
-  const img = [1, 2];
   return (
     <div className="relative w-full">
       {/* Desktop Image */}
@@ -20,25 +20,30 @@ function HeroSection() {
       />
 
       {/* Desktop Text Overlay */}
-      <div className="absolute right-24 top-1/2 hidden max-w-md -translate-y-1/2 font-bigshoulders text-white sm:block lg:right-64">
-        <h1 className="text-2xl font-bold uppercase md:text-3xl">
+      <motion.div
+        initial={{ x: "100px", opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ delay: 0.5, duration: 1, ease: "easeInOut" }}
+        className="absolute right-24 top-40 hidden p-3 font-bigshoulders text-white sm:block lg:right-64"
+      >
+        <h1 className="text-4xl font-bold uppercase md:text-5xl lg:text-6xl">
           Limited Time Only
         </h1>
-        <h2 className="mt-2 text-3xl font-extrabold text-green-400 md:text-5xl">
+        <h2 className="mt-2 text-5xl font-extrabold text-green-400 md:text-6xl lg:text-7xl">
           Up to 20% Off
         </h2>
-        <p className="mt-3 text-base text-gray-300 md:text-lg">
-          Upgrade your workwear with comfort, quality,{" "}
+        <p className="mt-4 text-lg text-gray-300 md:text-xl lg:text-2xl">
+          Upgrade your workwear with comfort, quality,
           <br className="hidden md:inline" />
           and unbeatable deals.
         </p>
         <button
           onClick={() => navigate("/products")}
-          className="mt-5 rounded-lg bg-green-500 px-6 py-3 text-lg font-semibold text-white transition-transform duration-300 hover:scale-105 hover:bg-green-600"
+          className="mt-6 rounded-lg bg-green-500 px-8 py-4 text-xl font-semibold text-white transition-transform duration-300 hover:scale-105 hover:bg-green-600"
         >
           Shop Now
         </button>
-      </div>
+      </motion.div>
 
       {/* Mobile Text Below Image */}
       <div className="flex flex-col p-4 font-bigshoulders text-black sm:hidden">
