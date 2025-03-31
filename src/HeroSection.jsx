@@ -2,6 +2,8 @@ import { useNavigate } from "react-router-dom";
 
 function HeroSection() {
   const navigate = useNavigate();
+
+  const img = [1, 2];
   return (
     <div className="relative w-full">
       {/* Desktop Image */}
@@ -18,7 +20,7 @@ function HeroSection() {
       />
 
       {/* Desktop Text Overlay */}
-      <div className="font-bigshoulders absolute right-24 top-1/2 hidden max-w-md -translate-y-1/2 text-white sm:block lg:right-64">
+      <div className="absolute right-24 top-1/2 hidden max-w-md -translate-y-1/2 font-bigshoulders text-white sm:block lg:right-64">
         <h1 className="text-2xl font-bold uppercase md:text-3xl">
           Limited Time Only
         </h1>
@@ -39,7 +41,7 @@ function HeroSection() {
       </div>
 
       {/* Mobile Text Below Image */}
-      <div className="font-bigshoulders flex flex-col p-4 text-black sm:hidden">
+      <div className="flex flex-col p-4 font-bigshoulders text-black sm:hidden">
         <h1 className="text-2xl font-bold uppercase">Limited Time Only</h1>
         <h2 className="mt-1 text-3xl font-extrabold text-green-500">
           Up to 20% Off
