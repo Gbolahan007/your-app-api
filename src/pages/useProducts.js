@@ -10,8 +10,6 @@ export function useProducts() {
     queryKey: ["products"],
     queryFn: getProducts,
     retry: 2,
-    staleTime: 1000 * 60 * 5, // 5 minutes
-    // Log the products when they're received
     onSuccess: (data) => {
       console.log(`useProducts received ${data?.length || 0} products`);
     },
