@@ -39,7 +39,7 @@ function FeaturedCategory() {
             className="flex cursor-pointer flex-col items-center justify-center rounded-xl border border-gray-300 p-8 transition-transform duration-300 hover:scale-105 hover:shadow-xl"
             initial={{ opacity: 0, x: -50 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ delay: index * 0.2, duration: 0.6 }}
+            transition={{ delay: index * 0.2, duration: 0.8 }}
           >
             <img
               src={item.image}
