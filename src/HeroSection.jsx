@@ -45,8 +45,12 @@ function HeroSection() {
         </button>
       </motion.div>
 
-      {/* Mobile Text Below Image */}
-      <div className="flex flex-col p-4 font-bigshoulders text-black sm:hidden">
+      <motion.div
+        initial={{ y: 100, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.5, duration: 1, ease: "easeInOut" }}
+        className="flex flex-col p-4 font-bigshoulders text-black sm:hidden"
+      >
         <h1 className="text-2xl font-bold uppercase">Limited Time Only</h1>
         <h2 className="mt-1 text-3xl font-extrabold text-green-500">
           Up to 20% Off
@@ -60,7 +64,7 @@ function HeroSection() {
         >
           Shop Now
         </button>
-      </div>
+      </motion.div>
     </div>
   );
 }
