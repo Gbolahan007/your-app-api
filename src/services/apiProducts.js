@@ -18,6 +18,5 @@ export async function getProducts() {
     console.error(error);
     throw new Error("Error fetching products");
   }
-  console.log(data);
   return data;
 }

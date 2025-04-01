@@ -1,18 +1,13 @@
 import { useSearchParams } from "react-router-dom";
 import { useProducts } from "../src/pages/useProducts";
 import Loader from "./Loader";
-
-function formatCurrency(price) {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-  }).format(price);
-}
+import ProductItem from "./ProductItem";
+import { motion } from "framer-motion";
 
 function ProductList() {
   const { products = [], isLoadingProducts, error } = useProducts();
-  const [searchParams] = useSearchParams();
 
+  const [searchParams] = useSearchParams();
   const selectedCategory = searchParams.get("category") || "all";
   const selectedCountry = searchParams.get("country") || "all";
 
@@ -45,32 +40,20 @@ function ProductList() {
 
   return (
     <div className="container mx-auto">
-      <h1 className="mb-6 text-3xl font-bold text-green-600">Our Products</h1>
+      <motion.h1
+        className="mb-6 text-3xl font-bold text-green-600"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+      >
+        Our Products
+      </motion.h1>
 
       {/* Product List */}
       <div className="mt-4 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
         {filteredProducts.length > 0 ? (
-          filteredProducts.map((product) => (
-            <div key={product.id} className="rounded-lg border p-4 shadow-md">
-              <img
-                src={product.image || "/placeholder.svg"}
-                alt={product.name}
-                className="mb-3 h-64 w-full rounded-md object-cover"
-                onError={(e) => {
-                  e.target.onerror = null;
-                  e.target.src = "/placeholder.jpg"; // Fallback image
-                }}
-              />
-              <h2 className="text-lg font-bold">{product.name}</h2>
-              <p className="text-sm text-gray-500">
-                Category: {product.category}
-              </p>
-
-              <p className="text-sm text-gray-700">{product.description}</p>
-              <p className="text-lg font-bold text-green-600">
-                {formatCurrency(product.price)}
-              </p>
-            </div>
+          filteredProducts.map((product, index) => (
+            <ProductItem key={product.id} product={product} index={index} />
           ))
         ) : (
           <p>No products found.</p>
