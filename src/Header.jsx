@@ -22,7 +22,7 @@ function Header() {
         </div>
 
         {/* Main Navigation - Hidden on Small Screens */}
-        <main className="hidden w-full max-w-screen-md items-center justify-center gap-8 md:flex">
+        <main className="hidden w-full max-w-screen-md items-center justify-center gap-8 sm:flex">
           <HeaderNav />
           <div className="flex items-center justify-center gap-5">
             {/* Search - Hidden on md Screens */}

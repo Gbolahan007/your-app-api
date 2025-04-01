@@ -5,6 +5,8 @@ export default {
     extend: {
       fontFamily: {
         bigshoulders: ["Big Shoulders", "sans-serif"],
+        poppins: ["Poppins", "sans-serif"],
+        tektur: ["Tektur", "serif"],
       },
     },
   },

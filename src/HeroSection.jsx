@@ -24,7 +24,7 @@ function HeroSection() {
         initial={{ x: "100px", opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
         transition={{ delay: 0.5, duration: 1, ease: "easeInOut" }}
-        className="absolute left-[10%] top-[15%] hidden border border-red-900 p-3 font-bigshoulders text-white md:left-[45%] md:top-[15%] md:block lg:right-[20%] lg:top-[25%]"
+        className="absolute left-[10%] top-[15%] hidden p-3 font-bigshoulders text-white md:left-[45%] md:top-[15%] md:block lg:right-[20%] lg:top-[25%]"
       >
         <h1 className="text-4xl font-bold uppercase md:text-5xl lg:text-6xl">
           Limited Time Only
