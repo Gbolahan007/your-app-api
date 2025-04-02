@@ -36,7 +36,8 @@ function Header() {
         </main>
 
         {/* Mobile Menu Button */}
-        <div className="sm:hidden">
+        <div className="flex items-center gap-5 sm:hidden">
+          <Headercart />
           <button
             onClick={() => setIsOpenModal(true)}
             className="rounded-md p-2 transition hover:bg-gray-300"
