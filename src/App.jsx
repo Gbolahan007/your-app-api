@@ -8,6 +8,7 @@ import PageNotFound from "./PageNotFound";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import ScrollToTop from "./ScrollTop";
+import ProductDetail from "./ProductDetail";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -31,6 +32,10 @@ function App() {
             <Route path="/contac" element={<Contact />} />
 
             <Route path="/products" element={<Products />} />
+            <Route
+              path="/product/:category/:slug"
+              element={<ProductDetail />}
+            />
           </Route>
           <Route path="*" element={<PageNotFound />} />
         </Routes>

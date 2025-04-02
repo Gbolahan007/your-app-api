@@ -1,5 +1,6 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
+import { useNavigate } from "react-router-dom";
 
 function formatCurrency(price) {
   return new Intl.NumberFormat("en-US", {
@@ -10,6 +11,7 @@ function formatCurrency(price) {
 
 // Individual product component with slide-in animation when in view
 function ProductItem({ product, index }) {
+  const navigate = useNavigate();
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.3 });
 
@@ -21,6 +23,7 @@ function ProductItem({ product, index }) {
   return (
     <motion.div
       ref={ref}
+      onClick={() => navigate(`/product/${product.category}/${product.slug}`)}
       className="rounded-lg border p-4 shadow-md"
       initial="hidden"
       animate={isInView ? "visible" : "hidden"}
