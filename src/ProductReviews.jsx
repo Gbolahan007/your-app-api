@@ -54,7 +54,9 @@ const ProductReviews = () => {
 
   return (
     <div className="mx-auto w-full max-w-7xl px-4 py-8">
-      <h2 className="mb-8 text-center text-2xl font-bold">Customer Reviews</h2>
+      <h2 className="relative mx-auto mb-8 w-fit text-center text-2xl font-bold after:absolute after:-bottom-4 after:left-1/2 after:h-1 after:w-24 after:-translate-x-1/2 after:rounded-full after:bg-green-600">
+        Customer Reviews
+      </h2>
 
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {reviews.map((review, index) => (

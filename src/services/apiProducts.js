@@ -20,3 +20,35 @@ export async function getProducts() {
   }
   return data;
 }
+
+export async function getProduct(slug) {
+  const { data, error } = await supabase
+    .from("products")
+    .select("*")
+    .eq("slug", slug)
+    .single();
+
+  if (error) {
+    console.error(error);
+    throw new Error("Slug not found");
+  }
+  console.log(data);
+
+  return data;
+}
+
+export async function getRelatedProducts(category, excludeId) {
+  const { data, error } = await supabase
+    .from("products")
+    .select("*")
+    .eq("category", category)
+    .neq("id", excludeId)
+    .limit(3);
+
+  if (error) {
+    console.error(error);
+    throw new Error("Related products could not be loaded");
+  }
+
+  return data;
+}
