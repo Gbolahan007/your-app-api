@@ -4,7 +4,7 @@ import Footer from "./Footer";
 
 function AppLayout() {
   return (
-    <div className="font-tektur bg-slate-50">
+    <div className="bg-slate-50">
       <Header />
       <main>
         <Outlet />

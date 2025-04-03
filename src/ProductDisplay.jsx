@@ -32,7 +32,7 @@ function ProductDisplay() {
   const { name, image, category, description, price } = product;
 
   return (
-    <div className="bg-white">
+    <div className="bg-white font-tektur">
       {/* Product Details */}
       <div className="mx-auto max-w-7xl px-4 py-8">
         <button
@@ -146,7 +146,7 @@ function ProductDisplay() {
           </h2>
 
           {isLoadingRelatedProduct ? (
-            <div className="flex items-center justify-center py-12">
+            <div className="flex items-center justify-center py-8">
               <Loader />
             </div>
           ) : relatedProducts && relatedProducts.length > 0 ? (

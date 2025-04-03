@@ -24,7 +24,7 @@ function ProductItem({ product, index }) {
     <motion.div
       ref={ref}
       onClick={() => navigate(`/product/${product.category}/${product.slug}`)}
-      className="rounded-lg border p-4 shadow-md"
+      className="cursor-pointer rounded-lg border p-4 shadow-md"
       initial="hidden"
       animate={isInView ? "visible" : "hidden"}
       variants={variants}

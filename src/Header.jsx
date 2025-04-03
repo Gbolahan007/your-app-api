@@ -15,7 +15,7 @@ function Header() {
   return (
     <>
       {/* Navigation Bar */}
-      <nav className="sticky left-0 top-0 z-50 flex w-full items-center justify-between bg-gray-200 shadow-md md:justify-center lg:justify-around">
+      <nav className="sticky left-0 top-0 z-50 flex w-full items-center justify-between bg-gray-200 font-tektur shadow-md md:justify-center lg:justify-around">
         {/* Logo */}
         <div className="w-20 cursor-pointer" onClick={() => navigate("/home")}>
           <img src="/seem-logo.jpg" className="h-full w-full" alt="seem logo" />
