@@ -31,7 +31,7 @@ const FeatureCards = () => {
         {features.map((feature, index) => (
           <motion.div
             key={index}
-            className="flex flex-col items-center rounded-lg border p-6 text-center shadow-md"
+            className="flex flex-col items-center rounded-lg bg-white p-6 text-center shadow-md"
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, amount: 0.3 }}

@@ -8,6 +8,7 @@ const BrandDescription = lazy(() => import("../BrandDescription"));
 const FeaturedCategory = lazy(() => import("../FeaturedCategory"));
 const BestSeller = lazy(() => import("../BestSeller"));
 const FeatureCards = lazy(() => import("../FeatureCards"));
+const ProductReviews = lazy(() => import("../ProductReviews"));
 
 function Home() {
   const [isOpen, setIsOpen] = useState(true); // Control modal state
@@ -25,6 +26,7 @@ function Home() {
         <FeaturedCategory />
         <BestSeller />
         <FeatureCards />
+        <ProductReviews />
       </Suspense>
 
       <StickyButton />

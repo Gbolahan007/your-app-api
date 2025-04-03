@@ -48,7 +48,7 @@ function ComingSoonModal({ isOpen, setIsOpen }) {
             {/* Right Image */}
             <div className="flex flex-1 items-center justify-center bg-[#f2f2f2] p-6">
               <img
-                src="/nursing-scrub.webp"
+                src="/badge-1.webp"
                 alt="Coming Soon"
                 className="w-full max-w-[200px] sm:max-w-[250px]"
               />
