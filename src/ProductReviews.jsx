@@ -10,7 +10,7 @@ const ProductReviews = () => {
       verified: true,
       recommends: true,
       review:
-        "I absolutely love this nursing scrub! The fit is perfect, and the fabric is both soft and durable, making it ideal for long shifts. It’s breathable, easy to move in, and looks professional—definitely a game-changer compared to other scrubs I’ve worn.",
+        "I love this nursing scrub! It’s soft, durable, and breathable—perfect for long shifts. Comfortable, professional, and a game-changer compared to others I’ve worn.",
     },
     {
       name: "Michella Chen",
@@ -19,7 +19,7 @@ const ProductReviews = () => {
       verified: true,
       recommends: true,
       review:
-        "The nursing badge exceeded my expectations! The stitching is precise, the colors are vibrant, and the quality is outstanding. It’s a perfect addition to my scrubs and adds a professional touch to my uniform.",
+        "The nursing badge is top-notch! Precise stitching, vibrant colors, and excellent quality. A perfect, professional touch to my scrubs.",
     },
     {
       name: "Priya Patel",
