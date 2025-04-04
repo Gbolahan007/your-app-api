@@ -39,7 +39,7 @@ function HeroSection() {
   }, []);
   // Image data
   const images = [
-    { desktop: "/logo-display.webp", mobile: "/mobile-loogoo.webp" },
+    { desktop: "/logo-display1.webp", mobile: "/mobile-logo1.webp" },
     { desktop: "/logo-display-1.webp", mobile: "/mobile-logo.webp" },
   ];
 
@@ -101,7 +101,7 @@ function HeroSection() {
               Limited Time Only
             </h1>
             <h2
-              className={`mt-2 text-3xl font-extrabold ${activeImage === 0 ? "text-green-400" : "text-blue-500"} md:text-4xl lg:text-7xl`}
+              className={`mt-2 text-3xl font-extrabold ${activeImage === 0 ? "bg-gradient-to-r from-green-400 to-[#20958d] bg-clip-text text-transparent" : "text-blue-500"} md:text-4xl lg:text-7xl`}
             >
               Up to 20% Off
             </h2>
@@ -115,7 +115,7 @@ function HeroSection() {
               onClick={() => navigate("/products")}
               className={`mt-6 rounded-lg px-8 py-4 text-xl font-semibold text-white transition-transform duration-300 hover:scale-105 ${
                 activeImage === 0
-                  ? "bg-green-500 hover:bg-green-600"
+                  ? "bg-gradient-to-r from-green-400 to-[#20958d] hover:bg-green-600"
                   : "bg-blue-500 hover:bg-blue-600"
               }`}
             >
