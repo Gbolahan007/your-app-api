@@ -11,6 +11,7 @@ import ScrollToTop from "./ScrollTop";
 import ProductDisplay from "./ProductDisplay";
 import { Toaster } from "react-hot-toast";
 import { ModalProvider } from "./contexts/ModalProvider";
+import Checkout from "./pages/Checkout"; // ✅ Import Checkout Page
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -19,6 +20,7 @@ const queryClient = new QueryClient({
     },
   },
 });
+
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
@@ -29,16 +31,15 @@ function App() {
           <Routes>
             <Route element={<AppLayout />}>
               <Route index element={<Navigate replace to="/home" />} />
-
               <Route path="/home" element={<Home />} />
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
-
               <Route path="/products" element={<Products />} />
               <Route
                 path="/product/:category/:slug"
                 element={<ProductDisplay />}
               />
+              <Route path="/checkout" element={<Checkout />} />
             </Route>
             <Route path="*" element={<PageNotFound />} />
           </Routes>
@@ -59,16 +60,16 @@ function App() {
           error: {
             duration: 5000,
             style: {
-              background: "#D32F2F", // Red background for error
-              color: "#FFFFFF", // White text for error
+              background: "#D32F2F",
+              color: "#FFFFFF",
             },
           },
           style: {
             fontSize: "16px",
             maxWidth: "500px",
             padding: "16px 24px",
-            background: "#222222", // Default background
-            color: "#E0E0E0", // Default text color
+            background: "#222222",
+            color: "#E0E0E0",
           },
         }}
       />

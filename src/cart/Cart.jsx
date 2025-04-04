@@ -8,12 +8,14 @@ import {
   increaseItemQuantity,
 } from "./cartSlice";
 import { useModal } from "../contexts/ModalProvider";
+import { useNavigate } from "react-router-dom";
 
 const formatPrice = (price) => {
   return `$${price.toLocaleString()}`;
 };
 
 function Cart() {
+  const navigate = useNavigate();
   const cart = useSelector((state) => state.cart.cart);
   const dispatch = useDispatch();
   const { setShowModal } = useModal();
@@ -116,7 +118,13 @@ function Cart() {
             <span className="font-bold">Total:</span>
             <span className="font-bold">{formatPrice(totalPrice)}</span>
           </div>
-          <button className="w-full rounded bg-green-500 py-2 text-white transition-colors hover:bg-green-700">
+          <button
+            onClick={() => {
+              navigate("/checkout");
+              setShowModal(false);
+            }}
+            className="w-full rounded bg-green-500 py-2 text-white transition-colors hover:bg-green-700"
+          >
             Checkout
           </button>
         </div>
