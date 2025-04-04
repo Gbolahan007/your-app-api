@@ -1,6 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
+import { useDispatch } from "react-redux";
+import { addItem } from "./cart/cartSlice";
+import { useModal } from "./contexts/ModalProvider";
 
 function formatCurrency(price) {
   return new Intl.NumberFormat("en-US", {
@@ -10,9 +13,18 @@ function formatCurrency(price) {
 }
 
 function BestSellerItem({ item }) {
+  const dispatch = useDispatch();
+  const { setShowModal } = useModal();
+
   const navigate = useNavigate();
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.2 });
+
+  function handleAddToCart(e) {
+    e.stopPropagation();
+    dispatch(addItem(item));
+    setShowModal(true);
+  }
 
   const cardVariants = {
     hidden: { opacity: 0, y: 50 },
@@ -79,6 +91,7 @@ function BestSellerItem({ item }) {
 
           {/* Add to Cart Button - Centered on Mobile */}
           <motion.button
+            onClick={(e) => handleAddToCart(e)}
             className="mt-2 w-full rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 sm:mt-0 sm:w-auto"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
