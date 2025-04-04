@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  cart: [],
+  cart: JSON.parse(localStorage.getItem("cart")) || [],
 };
 
 const cartSlice = createSlice({
@@ -23,10 +23,15 @@ const cartSlice = createSlice({
           totalPrice: action.payload.price,
         });
       }
+
+      localStorage.setItem("cart", JSON.stringify(state.cart));
     },
+
     deleteItem(state, action) {
       state.cart = state.cart.filter((item) => item.id !== action.payload);
+      localStorage.setItem("cart", JSON.stringify(state.cart));
     },
+
     increaseItemQuantity(state, action) {
       const item = state.cart.find((item) => item.id === action.payload.id);
 
@@ -34,13 +39,14 @@ const cartSlice = createSlice({
         item.quantity++;
         item.totalPrice = item.quantity * item.price;
       } else {
-        // Item not in cart, so add it
         state.cart.push({
           ...action.payload,
           quantity: 1,
           totalPrice: action.payload.price,
         });
       }
+
+      localStorage.setItem("cart", JSON.stringify(state.cart));
     },
 
     decreaseItemQuantity(state, action) {
@@ -51,9 +57,13 @@ const cartSlice = createSlice({
       } else {
         state.cart = state.cart.filter((item) => item.id !== action.payload);
       }
+
+      localStorage.setItem("cart", JSON.stringify(state.cart));
     },
+
     clearItem(state) {
       state.cart = [];
+      localStorage.setItem("cart", JSON.stringify(state.cart));
     },
   },
 });
