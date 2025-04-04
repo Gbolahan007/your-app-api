@@ -32,7 +32,6 @@ export async function getProduct(slug) {
     console.error(error);
     throw new Error("Slug not found");
   }
-  console.log(data);
 
   return data;
 }

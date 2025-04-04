@@ -10,6 +10,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import ScrollToTop from "./ScrollTop";
 import ProductDisplay from "./ProductDisplay";
 import { Toaster } from "react-hot-toast";
+import { ModalProvider } from "./contexts/ModalProvider";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -22,25 +23,27 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools initialIsOpen={false} />
-      <BrowserRouter>
-        <ScrollToTop />
-        <Routes>
-          <Route element={<AppLayout />}>
-            <Route index element={<Navigate replace to="/home" />} />
+      <ModalProvider>
+        <BrowserRouter>
+          <ScrollToTop />
+          <Routes>
+            <Route element={<AppLayout />}>
+              <Route index element={<Navigate replace to="/home" />} />
 
-            <Route path="/home" element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact />} />
+              <Route path="/home" element={<Home />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/contact" element={<Contact />} />
 
-            <Route path="/products" element={<Products />} />
-            <Route
-              path="/product/:category/:slug"
-              element={<ProductDisplay />}
-            />
-          </Route>
-          <Route path="*" element={<PageNotFound />} />
-        </Routes>
-      </BrowserRouter>
+              <Route path="/products" element={<Products />} />
+              <Route
+                path="/product/:category/:slug"
+                element={<ProductDisplay />}
+              />
+            </Route>
+            <Route path="*" element={<PageNotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </ModalProvider>
       <Toaster
         position="top-center"
         gutter={12}

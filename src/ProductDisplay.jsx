@@ -9,6 +9,13 @@ import {
   AiOutlineArrowLeft,
 } from "react-icons/ai";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addItem,
+  increaseItemQuantity,
+  decreaseItemQuantity,
+} from "./cart/cartSlice";
+import toast from "react-hot-toast";
 
 function formatCurrency(price) {
   return new Intl.NumberFormat("en-US", {
@@ -24,12 +31,23 @@ function ProductDisplay() {
     product?.category,
     product?.id,
   );
-
   const [activeTab, setActiveTab] = useState("details");
+  const dispatch = useDispatch();
+  const cart = useSelector((state) => state.cart.cart);
+  console.log(cart);
+  const cartItem = cart.find((item) => item.id === product?.id);
+  const quantity = cartItem?.quantity || 0;
 
-  if (isLoadingProduct) return <Loader />;
+  console.log(cartItem);
 
   const { name, image, category, description, price } = product;
+
+  function handleAddToCart() {
+    dispatch(addItem(product));
+    toast.success(`${product.name} added to cart`);
+  }
+
+  if (isLoadingProduct) return <Loader />;
 
   return (
     <div className="bg-white font-tektur">
@@ -113,13 +131,26 @@ function ProductDisplay() {
                 Quantity
               </h2>
               <div className="flex h-10 w-32 items-center">
-                <button className="flex h-full w-10 items-center justify-center rounded-l-md border border-gray-300 bg-gray-100 text-gray-600 hover:bg-gray-200">
+                <button
+                  onClick={() =>
+                    quantity > 1 && dispatch(decreaseItemQuantity(product.id))
+                  }
+                  disabled={quantity <= 1}
+                  className={`flex h-full w-10 items-center justify-center rounded-l-md border border-gray-300 ${
+                    quantity <= 1
+                      ? "bg-gray-100 text-gray-300"
+                      : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                  }`}
+                >
                   <AiOutlineMinus size={16} />
                 </button>
                 <div className="flex h-full w-12 items-center justify-center border-y border-gray-300 bg-white text-center font-medium">
-                  0
+                  {quantity}
                 </div>
-                <button className="flex h-full w-10 items-center justify-center rounded-r-md border border-gray-300 bg-gray-100 text-gray-600 hover:bg-gray-200">
+                <button
+                  onClick={() => dispatch(increaseItemQuantity(product))}
+                  className="flex h-full w-10 items-center justify-center rounded-r-md border border-gray-300 bg-gray-100 text-gray-600 hover:bg-gray-200"
+                >
                   <AiOutlinePlus size={16} />
                 </button>
               </div>
@@ -130,7 +161,10 @@ function ProductDisplay() {
               <button className="w-full rounded-lg bg-black px-6 py-3 text-center font-medium text-white shadow-md hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 sm:w-auto sm:flex-1">
                 Buy Now
               </button>
-              <button className="w-full rounded-lg border border-gray-300 bg-white px-6 py-3 text-center font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 sm:w-auto sm:flex-1">
+              <button
+                onClick={handleAddToCart}
+                className="w-full rounded-lg border border-gray-300 bg-white px-6 py-3 text-center font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 sm:w-auto sm:flex-1"
+              >
                 Add To Cart
               </button>
             </div>
