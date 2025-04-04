@@ -17,6 +17,7 @@ import {
 } from "./cart/cartSlice";
 import toast from "react-hot-toast";
 import { useModal } from "./contexts/ModalProvider";
+import { useNavigate } from "react-router-dom";
 
 // Move formatter outside component to prevent recreation on each render
 const formatCurrency = (price) => {
@@ -79,6 +80,7 @@ function ProductDisplay() {
   const dispatch = useDispatch();
   const { setShowModal } = useModal();
   const [activeTab, setActiveTab] = useState("details");
+  const navigate = useNavigate();
 
   // Load related products only when product is loaded and has category
   const { isLoadingRelatedProduct, relatedProducts } = useRelatedProducts(
@@ -189,6 +191,7 @@ function ProductDisplay() {
             {/* Buy and Add to Cart Buttons */}
             <div className="mt-auto flex flex-col space-y-3 sm:flex-row sm:space-x-4 sm:space-y-0">
               <button
+                onClick={() => navigate("/checkout")}
                 className="w-full rounded-lg bg-black px-6 py-3 text-center font-medium text-white shadow-md hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 sm:w-auto sm:flex-1"
                 aria-label="Buy Now"
               >
