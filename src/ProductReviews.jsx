@@ -54,7 +54,7 @@ const ProductReviews = () => {
 
   return (
     <div className="mx-auto mt-20 w-full max-w-7xl px-4 py-8">
-      <h2 className="relative mx-auto mb-8 w-fit text-center text-2xl font-bold after:absolute after:-bottom-4 after:left-1/2 after:h-1 after:w-24 after:-translate-x-1/2 after:rounded-full after:bg-green-600">
+      <h2 className="relative mx-auto mb-10 w-fit text-center text-2xl font-bold after:absolute after:-bottom-4 after:left-1/2 after:h-1 after:w-24 after:-translate-x-1/2 after:rounded-full after:bg-green-600">
         Customer Reviews
       </h2>
 
