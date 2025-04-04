@@ -1,13 +1,13 @@
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { FiX, FiTrash2 } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
-import { useModal } from "../contexts/ModalProvider";
 import {
   clearItem,
   decreaseItemQuantity,
   deleteItem,
   increaseItemQuantity,
 } from "./cartSlice";
+import { useModal } from "../contexts/ModalProvider";
 
 const formatPrice = (price) => {
   return `$${price.toLocaleString()}`;
@@ -24,7 +24,7 @@ function Cart() {
   );
 
   return (
-    <AnimatePresence>
+    <>
       {/* Overlay */}
       <motion.div
         initial={{ opacity: 0 }}
@@ -121,7 +121,7 @@ function Cart() {
           </button>
         </div>
       </motion.div>
-    </AnimatePresence>
+    </>
   );
 }
 

@@ -16,6 +16,7 @@ import {
   decreaseItemQuantity,
 } from "./cart/cartSlice";
 import toast from "react-hot-toast";
+import { useModal } from "./contexts/ModalProvider";
 
 function formatCurrency(price) {
   return new Intl.NumberFormat("en-US", {
@@ -37,14 +38,14 @@ function ProductDisplay() {
   console.log(cart);
   const cartItem = cart.find((item) => item.id === product?.id);
   const quantity = cartItem?.quantity || 0;
-
-  console.log(cartItem);
+  const { setShowModal } = useModal();
 
   const { name, image, category, description, price } = product;
 
   function handleAddToCart() {
     dispatch(addItem(product));
     toast.success(`${product.name} added to cart`);
+    setShowModal(true);
   }
 
   if (isLoadingProduct) return <Loader />;
