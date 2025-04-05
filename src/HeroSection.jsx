@@ -39,8 +39,8 @@ function HeroSection() {
   }, []);
   // Image data
   const images = [
-    { desktop: "/logo-display1.webp", mobile: "/mobile-logo1.webp" },
-    { desktop: "/logo-display-1.webp", mobile: "/mobile-logo.webp" },
+    { desktop: "/logoww.jpg", mobile: "/mobile-logo1.webp" },
+    { desktop: "/logowwww.jpg", mobile: "/mobile-logo.webp" },
   ];
 
   return (
