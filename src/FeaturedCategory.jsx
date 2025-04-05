@@ -12,7 +12,7 @@ function FeaturedCategory() {
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
 
   const categories = [
-    { title: "Badge", image: "/badge.webp" },
+    { title: "Badges", image: "/badge.webp" },
     { title: "Scrubs", image: "/scrubs.webp" },
     { title: "Caps", image: "/nurse-cap.jpg" },
     { title: "Tees", image: "/nurse-tees.jpg" },
