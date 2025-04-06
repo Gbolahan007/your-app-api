@@ -7,6 +7,19 @@ function HeroSection() {
   const [activeImage, setActiveImage] = useState(0);
   const [showText, setShowText] = useState(false);
 
+  // Separated image arrays
+  const desktopImages = ["/logowwww.jpg", "/logo.webp"];
+
+  const mobileImages = [
+    "/badge.webp",
+    "/badge-1.webp",
+    "/mobilel.JPG",
+    "/loogo.JPG",
+    "/mobilelog.JPG",
+    "/mobilelo.JPG",
+    "/mobileloo.JPG",
+  ];
+
   useEffect(() => {
     setActiveImage(0);
 
@@ -17,7 +30,7 @@ function HeroSection() {
     let textTimer;
 
     const interval = setInterval(() => {
-      setActiveImage((prev) => (prev + 1) % 7);
+      setActiveImage((prev) => (prev + 1) % mobileImages.length);
 
       setShowText(false);
       textTimer = setTimeout(() => {
@@ -30,17 +43,7 @@ function HeroSection() {
       clearTimeout(textTimer);
       clearInterval(interval);
     };
-  }, []);
-
-  const images = [
-    { desktop: "/logowwww.jpg", mobile: "/badge.webp" },
-    { desktop: "/logo-display-1.webp", mobile: "/badge-1.webp" },
-    { desktop: "/logowwww.jpg", mobile: "/mobilel.JPG" },
-    { desktop: "/logo-display-1.webp", mobile: "/loogo.JPG" },
-    { desktop: "/logowwww.jpg", mobile: "/mobilelog.JPG" },
-    { desktop: "/logo-display-1.webp", mobile: "/mobilelo.JPG" },
-    { desktop: "/logowwww.jpg", mobile: "/mobileloo.JPG" },
-  ];
+  }, [mobileImages.length]);
 
   const isGreenTheme = activeImage % 2 === 0;
 
@@ -49,13 +52,13 @@ function HeroSection() {
       {/* Desktop Images */}
       <div className="relative hidden h-[500px] w-full sm:block">
         <AnimatePresence>
-          {images.map(
+          {desktopImages.map(
             (image, index) =>
-              activeImage === index && (
+              activeImage % 2 === index && (
                 <motion.img
                   key={`desktop-${index}`}
-                  src={image.desktop}
-                  alt={`Nursing Accessories ${index + 1}`}
+                  src={image}
+                  alt={`Nursing Accessories Desktop ${index + 1}`}
                   className="absolute left-0 top-0 h-full w-full object-cover"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -70,13 +73,13 @@ function HeroSection() {
       {/* Mobile Images */}
       <div className="relative h-[350px] w-full sm:hidden">
         <AnimatePresence>
-          {images.map(
+          {mobileImages.map(
             (image, index) =>
               activeImage === index && (
                 <motion.img
                   key={`mobile-${index}`}
-                  src={image.mobile}
-                  alt={`Nursing Accessories ${index + 1}`}
+                  src={image}
+                  alt={`Nursing Accessories Mobile ${index + 1}`}
                   className="absolute left-0 top-0 h-full w-full object-cover"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -111,7 +114,7 @@ function HeroSection() {
               Up to 20% Off
             </h2>
 
-            <p className="mt-4 text-lg text-gray-300 md:text-xl lg:text-2xl">
+            <p className="mt-4 text-lg text-white md:text-xl lg:text-2xl">
               Upgrade your workwear with comfort, quality,
               <br className="hidden md:inline" />
               and unbeatable deals.
