@@ -9,7 +9,7 @@ function AppLayout() {
   const { showModal } = useModal();
 
   return (
-    <div className="bg-slate-50">
+    <div className="overflow-y-hidden bg-slate-50">
       <Header />
       <main>
         <Outlet />
