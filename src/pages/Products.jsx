@@ -4,7 +4,7 @@ import ProductList from "../ProductList";
 
 function Products() {
   return (
-    <div className="container mx-auto p-6 font-tektur">
+    <div className="container mx-auto overflow-x-hidden p-6 font-tektur">
       <ProductsCategoryNavigation />
       <ProductsSubcategoryNavigation />
       <ProductList />
