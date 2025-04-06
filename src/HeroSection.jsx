@@ -13,11 +13,11 @@ function HeroSection() {
   const mobileImages = [
     "/badge.webp",
     "/badge-1.webp",
-    "/mobilel.JPG",
-    "/loogo.JPG",
-    "/mobilelog.JPG",
-    "/mobilelo.JPG",
-    "/mobileloo.JPG",
+    "/mobilel.webp",
+    "/loogo.webp",
+    "/mobilelog.webp",
+    "/mobilelo.webp",
+    "/mobileloo.webp",
   ];
 
   useEffect(() => {

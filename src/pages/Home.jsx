@@ -14,7 +14,7 @@ function Home() {
   const [isOpen, setIsOpen] = useState(true); // Control modal state
 
   return (
-    <div className="relative w-full font-poppins">
+    <div className="relative w-full overflow-x-hidden font-poppins">
       {/* Show the modal if it's open */}
       {isOpen && (
         <UnderConstructionModal setIsOpen={setIsOpen} isOpen={isOpen} />
