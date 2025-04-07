@@ -17,7 +17,7 @@ const PaymentForm = ({
 
       {/* Cardholder Name */}
       <div className="mb-6">
-        <label className="mb-2 block text-gray-700" htmlFor="cardName">
+        <label className="mb-2 block text-gray-600" htmlFor="cardName">
           Cardholder Name
         </label>
         <input
