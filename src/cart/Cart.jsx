@@ -120,7 +120,7 @@ function Cart() {
           </div>
           <button
             onClick={() => {
-              navigate("/checkout");
+              navigate("/signup");
               setShowModal(false);
             }}
             className="w-full rounded bg-green-500 py-2 text-white transition-colors hover:bg-green-700"

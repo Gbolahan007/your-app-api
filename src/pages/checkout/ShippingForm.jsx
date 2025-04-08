@@ -15,7 +15,7 @@ const ShippingForm = ({
       <div className="mb-6 grid grid-cols-1 gap-4 md:grid-cols-2">
         {/* First Name */}
         <div>
-          <label className="mb-2 text-gray-700" htmlFor="firstName">
+          <label className="mb-2 block text-gray-700" htmlFor="firstName">
             First Name
           </label>
           <input

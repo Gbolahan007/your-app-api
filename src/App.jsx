@@ -12,6 +12,7 @@ import ProductDisplay from "./ProductDisplay";
 import { Toaster } from "react-hot-toast";
 import { ModalProvider } from "./contexts/ModalProvider";
 import Checkout from "./pages/Checkout"; // ✅ Import Checkout Page
+import SignInSignUp from "./pages/sign up/SignInSignUp";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -42,6 +43,7 @@ function App() {
               <Route path="/checkout" element={<Checkout />} />
             </Route>
             <Route path="*" element={<PageNotFound />} />
+            <Route path="/signup" element={<SignInSignUp />} />
           </Routes>
         </BrowserRouter>
       </ModalProvider>
