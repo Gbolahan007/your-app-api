@@ -1,4 +1,5 @@
 import { useState } from "react";
+import supabase from "../../../supabase";
 
 const SignInSignUp = () => {
   const [isSignIn, setIsSignIn] = useState(true);
@@ -14,8 +15,15 @@ const SignInSignUp = () => {
     });
   };
 
-  const handleGoogleAuth = () => {
+  const handleGoogleAuth = async () => {
     // Handle Google authentication here
+
+    await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo: "http://localhost:5173/auth/callback", // this is optional but good
+      },
+    });
     console.log("Authenticating with Google...");
   };
 
