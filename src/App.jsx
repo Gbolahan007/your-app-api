@@ -13,6 +13,7 @@ import { Toaster } from "react-hot-toast";
 import { ModalProvider } from "./contexts/ModalProvider";
 import Checkout from "./pages/Checkout"; // ✅ Import Checkout Page
 import SignInSignUp from "./pages/sign up/SignInSignUp";
+import AuthCallback from "./pages/AuthCallback";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -44,6 +45,7 @@ function App() {
             </Route>
             <Route path="*" element={<PageNotFound />} />
             <Route path="/signup" element={<SignInSignUp />} />
+            <Route path="/auth/callback" element={<AuthCallback />} />
           </Routes>
         </BrowserRouter>
       </ModalProvider>

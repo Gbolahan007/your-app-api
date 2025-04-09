@@ -1,31 +1,90 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import supabase from "../../../supabase";
 
 const SignInSignUp = () => {
   const [isSignIn, setIsSignIn] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [session, setSession] = useState(null);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Handle form submission logic here
-    console.log(isSignIn ? "Signing in with:" : "Signing up with:", {
-      email,
-      password,
+  useEffect(() => {
+    // Get initial session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
     });
+
+    // Set up auth state change listener
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+
+    // Cleanup subscription on unmount
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (isSignIn) {
+      // Sign in with email/password
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (error) {
+        console.error("Error signing in:", error);
+        // Handle error (show message to user)
+      }
+    } else {
+      // Sign up with email/password
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+      });
+
+      if (error) {
+        console.error("Error signing up:", error);
+        // Handle error (show message to user)
+      } else {
+        // Handle successful signup (show confirmation message)
+        console.log("Signup successful", data);
+      }
+    }
   };
 
   const handleGoogleAuth = async () => {
-    // Handle Google authentication here
-
-    await supabase.auth.signInWithOAuth({
+    const { data, error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: "http://localhost:5173/auth/callback", // this is optional but good
+        redirectTo: window.location.origin + "/auth/callback",
       },
     });
-    console.log("Authenticating with Google...");
+
+    if (error) {
+      console.error("Error authenticating with Google:", error);
+    }
   };
+
+  // If user is already logged in, show a different view
+  if (session) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-gray-100">
+        <div className="w-full max-w-md space-y-6 rounded-lg bg-white p-8 text-center shadow-lg">
+          <h1 className="text-2xl font-bold">You are logged in!</h1>
+          <p>Welcome, {session.user.email}</p>
+          <button
+            onClick={() => supabase.auth.signOut()}
+            className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+          >
+            Sign Out
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100">
