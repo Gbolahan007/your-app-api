@@ -5,7 +5,7 @@ import { TiHomeOutline } from "react-icons/ti";
 import { AiOutlineProduct } from "react-icons/ai";
 import { RiContactsBookLine } from "react-icons/ri";
 import { BiLogIn } from "react-icons/bi";
-import { useUser } from "./authentication/useUser"; // assuming you have a useUser hook
+import { useUser } from "./authentication/useUser";
 import { useAuth } from "./contexts/AuthContext";
 
 function HamburgerMenu({ isOpenModal, setIsOpenModal }) {
@@ -49,7 +49,7 @@ function HamburgerMenu({ isOpenModal, setIsOpenModal }) {
               <li>
                 <button
                   onClick={() => {
-                    navigate("/home");
+                    navigate("/");
                     setIsOpenModal(false);
                   }}
                   className="flex w-full items-center gap-5 p-3 text-blue-600 transition hover:text-green-600"
@@ -79,62 +79,47 @@ function HamburgerMenu({ isOpenModal, setIsOpenModal }) {
                   <RiContactsBookLine size={27} /> Contact
                 </button>
               </li>
-              {/* Conditional rendering for Login/Sign Up or Sign Out */}
-              {!isAuthenticated ? (
-                <>
-                  <li>
-                    <button
-                      onClick={() => {
-                        navigate("/login");
-                        setIsOpenModal(false);
-                      }}
-                      className="flex w-full items-center gap-5 p-3 text-blue-600 transition hover:text-green-600"
-                    >
-                      <BiLogIn size={27} /> Login
-                    </button>
-                  </li>
-                  <li>
-                    <button
-                      onClick={() => {
-                        navigate("/signup");
-                        setIsOpenModal(false);
-                      }}
-                      className="flex w-full items-center gap-5 p-3 text-blue-600 transition hover:text-green-600"
-                    >
-                      Sign Up
-                    </button>
-                  </li>
-                </>
-              ) : (
-                <li>
-                  <button
-                    onClick={() => {
-                      signOut(); // Trigger the sign out
-                      setIsOpenModal(false);
-                      navigate("/home"); // Redirect to home or any other page
-                    }}
-                    className="flex w-full items-center gap-5 p-3 text-red-600 transition hover:text-green-600"
-                  >
-                    Sign Out
-                  </button>
-                </li>
-              )}
+              <li>
+                <button
+                  onClick={() => {
+                    navigate("/login");
+                    setIsOpenModal(false);
+                  }}
+                  className="flex w-full items-center gap-5 p-3 text-blue-600 transition hover:text-green-600"
+                >
+                  <BiLogIn size={27} /> Login
+                </button>
+              </li>
             </ul>
 
-            {/* Button Section */}
             <div className="absolute bottom-6 left-0 w-full px-4">
-              <button
-                onClick={() => navigate("/signup")}
-                className="mb-3 w-full border border-green-600 py-2 text-center uppercase text-green-600 transition-all hover:bg-green-600 hover:text-white"
-              >
-                Login
-              </button>
-              <button
-                onClick={() => navigate("/signup")}
-                className="w-full bg-green-600 py-2 text-center uppercase text-white transition-all hover:bg-green-700"
-              >
-                Sign Up
-              </button>
+              {isAuthenticated ? (
+                <button
+                  onClick={() => {
+                    signOut();
+                    navigate("/home");
+                    setIsOpenModal(false);
+                  }}
+                  className="w-full bg-red-600 py-2 text-center uppercase text-white transition-all hover:bg-red-700"
+                >
+                  Sign Out
+                </button>
+              ) : (
+                <>
+                  <button
+                    onClick={() => navigate("/signup")}
+                    className="mb-3 w-full border border-green-600 py-2 text-center uppercase text-green-600 transition-all hover:bg-green-600 hover:text-white"
+                  >
+                    Login
+                  </button>
+                  <button
+                    onClick={() => navigate("/signup")}
+                    className="w-full bg-green-600 py-2 text-center uppercase text-white transition-all hover:bg-green-700"
+                  >
+                    Sign Up
+                  </button>
+                </>
+              )}
             </div>
           </motion.div>
         </>
