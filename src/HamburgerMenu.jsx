@@ -90,7 +90,7 @@ function HamburgerMenu({ isOpenModal, setIsOpenModal }) {
 
             <div className="absolute bottom-6 left-0 w-full px-4">
               <button
-                onClick={() => navigate("/login")}
+                onClick={() => navigate("/signup")}
                 className="mb-3 w-full border border-green-600 py-2 text-center uppercase text-green-600 transition-all hover:bg-green-600 hover:text-white"
               >
                 Login
