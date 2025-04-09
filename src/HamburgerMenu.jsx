@@ -5,9 +5,13 @@ import { TiHomeOutline } from "react-icons/ti";
 import { AiOutlineProduct } from "react-icons/ai";
 import { RiContactsBookLine } from "react-icons/ri";
 import { BiLogIn } from "react-icons/bi";
+import { useUser } from "./authentication/useUser"; // assuming you have a useUser hook
+import { useAuth } from "./contexts/AuthContext";
 
 function HamburgerMenu({ isOpenModal, setIsOpenModal }) {
   const navigate = useNavigate();
+  const { isAuthenticated } = useUser();
+  const { signOut } = useAuth();
 
   return (
     <div>
@@ -45,7 +49,7 @@ function HamburgerMenu({ isOpenModal, setIsOpenModal }) {
               <li>
                 <button
                   onClick={() => {
-                    navigate("/");
+                    navigate("/home");
                     setIsOpenModal(false);
                   }}
                   className="flex w-full items-center gap-5 p-3 text-blue-600 transition hover:text-green-600"
@@ -75,19 +79,49 @@ function HamburgerMenu({ isOpenModal, setIsOpenModal }) {
                   <RiContactsBookLine size={27} /> Contact
                 </button>
               </li>
-              <li>
-                <button
-                  onClick={() => {
-                    navigate("/login");
-                    setIsOpenModal(false);
-                  }}
-                  className="flex w-full items-center gap-5 p-3 text-blue-600 transition hover:text-green-600"
-                >
-                  <BiLogIn size={27} /> Login
-                </button>
-              </li>
+              {/* Conditional rendering for Login/Sign Up or Sign Out */}
+              {!isAuthenticated ? (
+                <>
+                  <li>
+                    <button
+                      onClick={() => {
+                        navigate("/login");
+                        setIsOpenModal(false);
+                      }}
+                      className="flex w-full items-center gap-5 p-3 text-blue-600 transition hover:text-green-600"
+                    >
+                      <BiLogIn size={27} /> Login
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      onClick={() => {
+                        navigate("/signup");
+                        setIsOpenModal(false);
+                      }}
+                      className="flex w-full items-center gap-5 p-3 text-blue-600 transition hover:text-green-600"
+                    >
+                      Sign Up
+                    </button>
+                  </li>
+                </>
+              ) : (
+                <li>
+                  <button
+                    onClick={() => {
+                      signOut(); // Trigger the sign out
+                      setIsOpenModal(false);
+                      navigate("/home"); // Redirect to home or any other page
+                    }}
+                    className="flex w-full items-center gap-5 p-3 text-red-600 transition hover:text-green-600"
+                  >
+                    Sign Out
+                  </button>
+                </li>
+              )}
             </ul>
 
+            {/* Button Section */}
             <div className="absolute bottom-6 left-0 w-full px-4">
               <button
                 onClick={() => navigate("/signup")}
