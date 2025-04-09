@@ -5,12 +5,12 @@ const ProductReviews = () => {
   const reviews = [
     {
       name: "Sarah Johnson",
-      product: "Nursing Scrub",
+      product: "Nursing Badge",
       rating: 5,
       verified: true,
       recommends: true,
       review:
-        "I love this nursing scrub! It’s soft, durable, and breathable—perfect for long shifts. Comfortable, professional, and a game-changer compared to others I’ve worn.",
+        "Absolutely love this nursing badge! It's lightweight yet sturdy, and the print is so clear. Makes identifying staff easy and stylish.",
     },
     {
       name: "Michella Chen",
@@ -23,21 +23,21 @@ const ProductReviews = () => {
     },
     {
       name: "Priya Patel",
-      product: "Premium Cap",
+      product: "Nursing Badge",
       rating: 5,
       verified: true,
       recommends: true,
       review:
-        "Perfect fit and extremely comfortable. The material is breathable and the adjustable strap makes it suitable for everyone. Highly recommend!",
+        "This badge is not only practical but also super cute! It adds personality to my uniform while still looking professional.",
     },
     {
       name: "Ella Wilson",
-      product: "Organic T-shirt",
+      product: "Nursing Badge",
       rating: 4,
       verified: true,
       recommends: true,
       review:
-        "Super soft material and the fit is just right. The eco-friendly fabric feels great against the skin. Will definitely buy more colors!",
+        "The design is elegant and clear. It's held up well through many shifts and even after being sanitized multiple times. Great purchase!",
     },
   ];
 

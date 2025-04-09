@@ -11,9 +11,11 @@ import ScrollToTop from "./ScrollTop";
 import ProductDisplay from "./ProductDisplay";
 import { Toaster } from "react-hot-toast";
 import { ModalProvider } from "./contexts/ModalProvider";
-import Checkout from "./pages/Checkout"; // ✅ Import Checkout Page
+import Checkout from "./pages/Checkout";
 import SignInSignUp from "./pages/sign up/SignInSignUp";
 import AuthCallback from "./pages/AuthCallback";
+import { AppProvider } from "./contexts/AuthContext";
+import ProtectedRoute from "./ProtectedRoute";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -27,28 +29,37 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools initialIsOpen={false} />
-      <ModalProvider>
-        <BrowserRouter>
-          <ScrollToTop />
-          <Routes>
-            <Route element={<AppLayout />}>
-              <Route index element={<Navigate replace to="/home" />} />
-              <Route path="/home" element={<Home />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/products" element={<Products />} />
-              <Route
-                path="/product/:category/:slug"
-                element={<ProductDisplay />}
-              />
-              <Route path="/checkout" element={<Checkout />} />
-            </Route>
-            <Route path="*" element={<PageNotFound />} />
-            <Route path="/signup" element={<SignInSignUp />} />
-            <Route path="/auth/callback" element={<AuthCallback />} />
-          </Routes>
-        </BrowserRouter>
-      </ModalProvider>
+      <AppProvider>
+        <ModalProvider>
+          <BrowserRouter>
+            <ScrollToTop />
+            <Routes>
+              <Route element={<AppLayout />}>
+                <Route index element={<Navigate replace to="/home" />} />
+                <Route path="/home" element={<Home />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/products" element={<Products />} />
+                <Route
+                  path="/product/:category/:slug"
+                  element={<ProductDisplay />}
+                />
+                <Route
+                  path="/checkout"
+                  element={
+                    <ProtectedRoute>
+                      <Checkout />
+                    </ProtectedRoute>
+                  }
+                />
+              </Route>
+              <Route path="*" element={<PageNotFound />} />
+              <Route path="/signup" element={<SignInSignUp />} />
+              <Route path="/auth/callback" element={<AuthCallback />} />
+            </Routes>
+          </BrowserRouter>
+        </ModalProvider>
+      </AppProvider>
       <Toaster
         position="top-center"
         gutter={12}

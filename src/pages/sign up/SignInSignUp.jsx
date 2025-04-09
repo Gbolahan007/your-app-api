@@ -1,74 +1,35 @@
-import { useState, useEffect } from "react";
-import supabase from "../../../supabase";
+import { useState } from "react";
+import { useAuth } from "../../contexts/AuthContext";
+import { useLogin } from "../../authentication/useLogin";
+import { BiLoaderAlt } from "react-icons/bi";
 
 const SignInSignUp = () => {
   const [isSignIn, setIsSignIn] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [session, setSession] = useState(null);
 
-  useEffect(() => {
-    // Get initial session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-    });
-
-    // Set up auth state change listener
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-    });
-
-    // Cleanup subscription on unmount
-    return () => subscription.unsubscribe();
-  }, []);
+  const { session, signOut, signInWithGoogle } = useAuth();
+  const { login, isLoading } = useLogin();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (isSignIn) {
-      // Sign in with email/password
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-
-      if (error) {
-        console.error("Error signing in:", error);
-        // Handle error (show message to user)
-      }
-    } else {
-      // Sign up with email/password
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-      });
-
-      if (error) {
-        console.error("Error signing up:", error);
-        // Handle error (show message to user)
-      } else {
-        // Handle successful signup (show confirmation message)
-        console.log("Signup successful", data);
-      }
-    }
+    if (!email || !password) return;
+    login(
+      { email, password },
+      {
+        onSettled: () => {
+          setEmail("");
+          setPassword("");
+        },
+      },
+    );
   };
 
   const handleGoogleAuth = async () => {
-    const { data, error } = await supabase.auth.signInWithOAuth({
-      provider: "google",
-      options: {
-        redirectTo: window.location.origin + "/auth/callback",
-      },
-    });
-
-    if (error) {
-      console.error("Error authenticating with Google:", error);
-    }
+    const { error } = await signInWithGoogle();
+    if (error) console.error("Google auth error:", error);
   };
 
-  // If user is already logged in, show a different view
   if (session) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-gray-100">
@@ -76,7 +37,7 @@ const SignInSignUp = () => {
           <h1 className="text-2xl font-bold">You are logged in!</h1>
           <p>Welcome, {session.user.email}</p>
           <button
-            onClick={() => supabase.auth.signOut()}
+            onClick={signOut}
             className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
           >
             Sign Out
@@ -145,6 +106,7 @@ const SignInSignUp = () => {
               id="email"
               name="email"
               type="email"
+              disabled={isLoading}
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -152,7 +114,6 @@ const SignInSignUp = () => {
               placeholder="Enter your email"
             />
           </div>
-
           <div>
             <label
               htmlFor="password"
@@ -166,44 +127,24 @@ const SignInSignUp = () => {
               type="password"
               required
               value={password}
+              disabled={isLoading}
               onChange={(e) => setPassword(e.target.value)}
               className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500"
               placeholder="Enter your password"
             />
           </div>
-
-          {isSignIn && (
-            <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <input
-                  id="remember-me"
-                  name="remember-me"
-                  type="checkbox"
-                  className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                />
-                <label
-                  htmlFor="remember-me"
-                  className="ml-2 block text-sm text-gray-700"
-                >
-                  Remember me
-                </label>
-              </div>
-              <div className="text-sm">
-                <a
-                  href="#"
-                  className="font-medium text-blue-600 hover:text-blue-500"
-                >
-                  Forgot password?
-                </a>
-              </div>
-            </div>
-          )}
-
           <button
             type="submit"
-            className="flex w-full justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            disabled={isLoading}
+            className="flex w-full items-center justify-center gap-2 rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
           >
-            {isSignIn ? "Sign In" : "Sign Up"}
+            {isLoading ? (
+              <BiLoaderAlt className="h-5 w-5 animate-spin text-white" />
+            ) : isSignIn ? (
+              "Sign In"
+            ) : (
+              "Sign Up"
+            )}
           </button>
         </form>
 

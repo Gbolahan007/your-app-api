@@ -9,12 +9,14 @@ import {
 } from "./cartSlice";
 import { useModal } from "../contexts/ModalProvider";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "../authentication/useUser";
 
 const formatPrice = (price) => {
   return `$${price.toLocaleString()}`;
 };
 
 function Cart() {
+  const { isAuthenticated } = useUser();
   const navigate = useNavigate();
   const cart = useSelector((state) => state.cart.cart);
   const dispatch = useDispatch();
@@ -120,7 +122,11 @@ function Cart() {
           </div>
           <button
             onClick={() => {
-              navigate("/signup");
+              if (isAuthenticated) {
+                navigate("/checkout");
+              } else {
+                navigate("/signup");
+              }
               setShowModal(false);
             }}
             className="w-full rounded bg-green-500 py-2 text-white transition-colors hover:bg-green-700"
