@@ -7,9 +7,7 @@ function HeroSection() {
   const [activeImage, setActiveImage] = useState(0);
   const [showText, setShowText] = useState(false);
 
-  // Separated image arrays
   const desktopImages = ["/logowwww.jpg", "/logo.webp"];
-
   const mobileImages = [
     "/badge.webp",
     "/badge-1.webp",
@@ -20,7 +18,17 @@ function HeroSection() {
     "/mobileloo.webp",
   ];
 
+  // Preload images
+  const preloadImages = (imageArray) => {
+    imageArray.forEach((image) => {
+      const img = new Image();
+      img.src = image;
+    });
+  };
+
   useEffect(() => {
+    preloadImages([...desktopImages, ...mobileImages]);
+
     setActiveImage(0);
 
     const initialTextTimer = setTimeout(() => {
@@ -28,10 +36,8 @@ function HeroSection() {
     }, 1000);
 
     let textTimer;
-
     const interval = setInterval(() => {
       setActiveImage((prev) => (prev + 1) % mobileImages.length);
-
       setShowText(false);
       textTimer = setTimeout(() => {
         setShowText(true);
@@ -91,7 +97,7 @@ function HeroSection() {
         </AnimatePresence>
       </div>
 
-      {/* Desktop Text Overlay */}
+      {/* Text Overlay */}
       <AnimatePresence>
         {showText && (
           <motion.div
@@ -122,44 +128,6 @@ function HeroSection() {
             <button
               onClick={() => navigate("/products")}
               className={`mt-6 rounded-lg px-8 py-4 text-xl font-semibold text-white transition-transform duration-300 hover:scale-105 ${
-                isGreenTheme
-                  ? "bg-gradient-to-r from-green-400 to-[#20958d] hover:bg-green-600"
-                  : "bg-blue-500 hover:bg-blue-600"
-              }`}
-            >
-              Shop Now
-            </button>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Mobile Text Overlay */}
-      <AnimatePresence>
-        {showText && (
-          <motion.div
-            initial={{ y: 50, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: 50, opacity: 0 }}
-            transition={{ duration: 1, ease: "easeInOut" }}
-            className="flex flex-col p-4 font-bigshoulders text-black sm:hidden"
-          >
-            <h1 className="text-2xl font-bold uppercase">Limited Time Only</h1>
-
-            <h2
-              className={`mt-1 text-3xl font-extrabold ${
-                isGreenTheme
-                  ? "bg-gradient-to-r from-green-400 to-[#20958d] bg-clip-text text-transparent"
-                  : "text-blue-500"
-              }`}
-            >
-              Up to 20% Off
-            </h2>
-            <p className="mt-2 text-sm text-gray-700">
-              Comfort, quality & unbeatable deals.
-            </p>
-            <button
-              onClick={() => navigate("/products")}
-              className={`mt-4 w-full max-w-[400px] rounded-lg px-5 py-3 text-base font-semibold text-white transition-transform duration-300 hover:scale-105 ${
                 isGreenTheme
                   ? "bg-gradient-to-r from-green-400 to-[#20958d] hover:bg-green-600"
                   : "bg-blue-500 hover:bg-blue-600"
