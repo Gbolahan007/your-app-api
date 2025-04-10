@@ -82,7 +82,7 @@ function HamburgerMenu({ isOpenModal, setIsOpenModal }) {
               <li>
                 <button
                   onClick={() => {
-                    navigate("/login");
+                    navigate("/signup");
                     setIsOpenModal(false);
                   }}
                   className="flex w-full items-center gap-5 p-3 text-blue-600 transition hover:text-green-600"
