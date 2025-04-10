@@ -21,7 +21,7 @@ function UpdatePassword() {
 
     updateUserPassword(data.password, {
       onSuccess: () => {
-        navigate("/signup"); // Redirect to login page after successful password update
+        navigate("/home"); // Redirect to login page after successful password update
       },
     });
   }
