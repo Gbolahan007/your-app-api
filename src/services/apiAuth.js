@@ -41,7 +41,7 @@ export async function getCurrentUser() {
 
 export async function sendPasswordResetEmail(email) {
   const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: "http://localhost:5173/update-password",
+    redirectTo: "https://seemly.vercel.app/update-password",
   });
 
   if (error) throw new Error(error.message);

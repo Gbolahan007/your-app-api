@@ -120,10 +120,10 @@ const SignInSignUp = () => {
 
             <button
               type="submit"
-              disabled={isLoading}
+              disabled={isLoadingUpdatePassword}
               className="flex w-full items-center justify-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
             >
-              {isLoading ? (
+              {isLoadingUpdatePassword ? (
                 <BiLoaderAlt className="h-5 w-5 animate-spin" />
               ) : (
                 "Send Reset Link"
