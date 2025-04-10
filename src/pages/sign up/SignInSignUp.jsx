@@ -1,28 +1,59 @@
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { useAuth } from "../../contexts/AuthContext";
 import { useLogin } from "../../authentication/useLogin";
+import { useSignup } from "../../authentication/useSignup";
 import { BiLoaderAlt } from "react-icons/bi";
+import toast from "react-hot-toast";
+import { useForgotPassword } from "../../authentication/useForgotPassword";
+import { useNavigate } from "react-router-dom";
 
 const SignInSignUp = () => {
   const [isSignIn, setIsSignIn] = useState(true);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
+  const [forgotPassword, setForgotPassword] = useState(false);
   const { session, signOut, signInWithGoogle } = useAuth();
   const { login, isLoading } = useLogin();
+  const { signup, isLoading: isSignupLoading } = useSignup();
+  const { sendPasswordResetEmail, isLoadingUpdatePassword } =
+    useForgotPassword();
+  const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!email || !password) return;
-    login(
-      { email, password },
-      {
-        onSettled: () => {
-          setEmail("");
-          setPassword("");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm();
+
+  const onSubmit = (data) => {
+    if (forgotPassword && data.email) {
+      // Handle password reset request
+      sendPasswordResetEmail(data.email);
+      console.log("Password reset requested for:", data.email);
+      toast.success("Password reset link has been sent to your email.");
+      navigate("/update-password");
+      setForgotPassword(false);
+      reset();
+      return;
+    }
+
+    if (!data.email || !data.password) return;
+
+    if (isSignIn) {
+      login(
+        { email: data.email, password: data.password },
+        { onSettled: () => reset() },
+      );
+    } else {
+      signup(
+        {
+          fullName: data.fullName,
+          email: data.email,
+          password: data.password,
         },
-      },
-    );
+        { onSettled: () => reset() },
+      );
+    }
   };
 
   const handleGoogleAuth = async () => {
@@ -30,6 +61,7 @@ const SignInSignUp = () => {
     if (error) console.error("Google auth error:", error);
   };
 
+  // If user is already logged in
   if (session) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-gray-100">
@@ -38,7 +70,7 @@ const SignInSignUp = () => {
           <p>Welcome, {session.user.email}</p>
           <button
             onClick={signOut}
-            className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+            className="mt-4 rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
           >
             Sign Out
           </button>
@@ -47,6 +79,72 @@ const SignInSignUp = () => {
     );
   }
 
+  // Forgot Password View
+  if (forgotPassword) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-gray-100">
+        <div className="w-full max-w-md space-y-6 rounded-lg bg-white p-8 shadow-lg">
+          <div className="text-center">
+            <h1 className="text-2xl font-bold">Reset Password</h1>
+            <p className="mt-2 text-sm text-gray-600">
+              Enter your email to receive a password reset link
+            </p>
+          </div>
+
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Email
+              </label>
+              <input
+                type="email"
+                disabled={isLoading}
+                placeholder="Enter your email"
+                className={`mt-1 block w-full rounded-md border px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 ${
+                  errors.email ? "border-red-500" : "border-gray-300"
+                }`}
+                {...register("email", {
+                  required: "Email is required",
+                  pattern: {
+                    value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                    message: "Please enter a valid email address",
+                  },
+                })}
+              />
+              {errors.email && (
+                <p className="mt-1 text-sm text-red-600">
+                  {errors.email.message}
+                </p>
+              )}
+            </div>
+
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="flex w-full items-center justify-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
+            >
+              {isLoading ? (
+                <BiLoaderAlt className="h-5 w-5 animate-spin" />
+              ) : (
+                "Send Reset Link"
+              )}
+            </button>
+          </form>
+
+          <div className="text-center text-sm">
+            <button
+              onClick={() => setForgotPassword(false)}
+              className="font-medium text-blue-600 hover:text-blue-500"
+            >
+              Back to Sign In
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Main Sign In / Sign Up View
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100">
       <div className="w-full max-w-md space-y-6 rounded-lg bg-white p-8 shadow-lg">
@@ -63,7 +161,7 @@ const SignInSignUp = () => {
 
         <button
           onClick={handleGoogleAuth}
-          className="flex w-full items-center justify-center space-x-3 rounded-md border border-gray-300 bg-white px-4 py-2 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+          className="flex w-full items-center justify-center gap-2 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50"
         >
           <svg className="h-5 w-5" viewBox="0 0 24 24">
             <path
@@ -89,57 +187,107 @@ const SignInSignUp = () => {
         </button>
 
         <div className="flex items-center justify-center">
-          <div className="h-px w-full bg-gray-300"></div>
+          <div className="h-px w-full bg-gray-300" />
           <div className="px-4 text-sm text-gray-500">OR</div>
-          <div className="h-px w-full bg-gray-300"></div>
+          <div className="h-px w-full bg-gray-300" />
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          {!isSignIn && (
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Full Name
+              </label>
+              <input
+                type="text"
+                disabled={isSignupLoading}
+                placeholder="Enter your full name"
+                className={`mt-1 block w-full rounded-md border px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 ${
+                  errors.fullName ? "border-red-500" : "border-gray-300"
+                }`}
+                {...register("fullName", {
+                  required: !isSignIn && "Full name is required",
+                })}
+              />
+              {errors.fullName && (
+                <p className="mt-1 text-sm text-red-600">
+                  {errors.fullName.message}
+                </p>
+              )}
+            </div>
+          )}
+
           <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-gray-700"
-            >
+            <label className="block text-sm font-medium text-gray-700">
               Email
             </label>
             <input
-              id="email"
-              name="email"
               type="email"
-              disabled={isLoading}
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              disabled={isLoading || isSignupLoading}
               placeholder="Enter your email"
+              className={`mt-1 block w-full rounded-md border px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 ${
+                errors.email ? "border-red-500" : "border-gray-300"
+              }`}
+              {...register("email", {
+                required: "Email is required",
+                pattern: {
+                  value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                  message: "Please enter a valid email address",
+                },
+              })}
             />
+            {errors.email && (
+              <p className="mt-1 text-sm text-red-600">
+                {errors.email.message}
+              </p>
+            )}
           </div>
+
           <div>
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-gray-700"
-            >
+            <label className="block text-sm font-medium text-gray-700">
               Password
             </label>
             <input
-              id="password"
-              name="password"
               type="password"
-              required
-              value={password}
-              disabled={isLoading}
-              onChange={(e) => setPassword(e.target.value)}
-              className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              disabled={isLoading || isSignupLoading}
               placeholder="Enter your password"
+              className={`mt-1 block w-full rounded-md border px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 ${
+                errors.password ? "border-red-500" : "border-gray-300"
+              }`}
+              {...register("password", {
+                required: "Password is required",
+                minLength: {
+                  value: 6,
+                  message: "Password must be at least 6 characters",
+                },
+              })}
             />
+            {errors.password && (
+              <p className="mt-1 text-sm text-red-600">
+                {errors.password.message}
+              </p>
+            )}
           </div>
+
+          {isSignIn && (
+            <div className="flex justify-end text-sm">
+              <button
+                type="button"
+                onClick={() => setForgotPassword(true)}
+                className="font-medium text-blue-600 hover:text-blue-500"
+              >
+                Forgot password?
+              </button>
+            </div>
+          )}
+
           <button
             type="submit"
-            disabled={isLoading}
-            className="flex w-full items-center justify-center gap-2 rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            disabled={isLoading || isSignupLoading}
+            className="flex w-full items-center justify-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
           >
-            {isLoading ? (
-              <BiLoaderAlt className="h-5 w-5 animate-spin text-white" />
+            {isLoading || isSignupLoading ? (
+              <BiLoaderAlt className="h-5 w-5 animate-spin" />
             ) : isSignIn ? (
               "Sign In"
             ) : (
@@ -149,15 +297,18 @@ const SignInSignUp = () => {
         </form>
 
         <div className="text-center text-sm">
-          <p className="text-gray-600">
-            {isSignIn ? "Don't have an account? " : "Already have an account? "}
-            <button
-              onClick={() => setIsSignIn(!isSignIn)}
-              className="font-medium text-blue-600 hover:text-blue-500"
-            >
-              {isSignIn ? "Sign up" : "Sign in"}
-            </button>
-          </p>
+          <span>
+            {isSignIn ? "Don’t have an account? " : "Already have an account? "}
+          </span>
+          <button
+            onClick={() => {
+              setIsSignIn(!isSignIn);
+              reset();
+            }}
+            className="font-medium text-blue-600 hover:text-blue-500"
+          >
+            {isSignIn ? "Sign up" : "Sign in"}
+          </button>
         </div>
       </div>
     </div>

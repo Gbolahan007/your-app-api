@@ -16,6 +16,7 @@ import SignInSignUp from "./pages/sign up/SignInSignUp";
 import AuthCallback from "./pages/AuthCallback";
 import { AppProvider } from "./contexts/AuthContext";
 import ProtectedRoute from "./ProtectedRoute";
+import ForgotPassword from "./authentication/ForgotPassword";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -56,6 +57,7 @@ function App() {
               <Route path="*" element={<PageNotFound />} />
               <Route path="/signup" element={<SignInSignUp />} />
               <Route path="/auth/callback" element={<AuthCallback />} />
+              <Route path="/update-password" element={<ForgotPassword />} />
             </Routes>
           </BrowserRouter>
         </ModalProvider>

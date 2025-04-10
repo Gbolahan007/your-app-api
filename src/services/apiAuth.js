@@ -1,5 +1,21 @@
 import supabase from "../../supabase";
 
+export async function signup({ fullName, email, password }) {
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password,
+    options: {
+      data: {
+        fullName,
+      },
+    },
+  });
+
+  if (error) throw new Error(error.message);
+
+  return data;
+}
+
 export async function Login({ email, password }) {
   const { data, error } = await supabase.auth.signInWithPassword({
     email,
@@ -21,4 +37,24 @@ export async function getCurrentUser() {
   if (error) throw new Error(error.message);
 
   return data?.user;
+}
+
+export async function sendPasswordResetEmail(email) {
+  const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: "http://localhost:5173/update-password",
+  });
+
+  if (error) throw new Error(error.message);
+
+  return data;
+}
+
+export async function updatePassword(newPassword) {
+  const { data, error } = await supabase.auth.updateUser({
+    password: newPassword,
+  });
+
+  if (error) throw new Error(error.message);
+
+  return data;
 }
