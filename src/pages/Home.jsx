@@ -2,6 +2,7 @@ import { lazy, Suspense, useState } from "react";
 import Loader from "../Loader";
 import StickyButton from "../StickyButton";
 import UnderConstructionModal from "../UnderConstructionModal"; // Import the modal
+import { useAuth } from "../contexts/AuthContext";
 
 const HeroSection = lazy(() => import("../HeroSection"));
 const BrandDescription = lazy(() => import("../BrandDescription"));
@@ -11,7 +12,7 @@ const FeatureCards = lazy(() => import("../FeatureCards"));
 const ProductReviews = lazy(() => import("../ProductReviews"));
 
 function Home() {
-  const [isOpen, setIsOpen] = useState(true); // Control modal state
+  const [isOpen, setIsOpen] = useState(true);
 
   return (
     <div className="relative w-full overflow-x-hidden font-poppins">
