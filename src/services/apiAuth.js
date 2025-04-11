@@ -1,5 +1,6 @@
 import supabase from "../../supabase";
 
+// Sign up a new user with email, password, and full name
 export async function signup({ fullName, email, password }) {
   const { data, error } = await supabase.auth.signUp({
     email,
@@ -16,6 +17,7 @@ export async function signup({ fullName, email, password }) {
   return data;
 }
 
+// Log in a user using email and password
 export async function Login({ email, password }) {
   const { data, error } = await supabase.auth.signInWithPassword({
     email,
@@ -27,6 +29,7 @@ export async function Login({ email, password }) {
   return data;
 }
 
+// Get the currently authenticated user
 export async function getCurrentUser() {
   const { data: session } = await supabase.auth.getSession();
 
@@ -39,6 +42,7 @@ export async function getCurrentUser() {
   return data?.user;
 }
 
+// Send password reset email with redirect URL after reset
 export async function sendPasswordResetEmail(email) {
   const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
     redirectTo: "https://seemly.vercel.app/update-password",
@@ -49,6 +53,7 @@ export async function sendPasswordResetEmail(email) {
   return data;
 }
 
+// Update user's password
 export async function updatePassword(newPassword) {
   const { data, error } = await supabase.auth.updateUser({
     password: newPassword,
