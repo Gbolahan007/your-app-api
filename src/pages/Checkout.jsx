@@ -66,6 +66,8 @@ const Checkout = () => {
 
   // Submit handlers
   const onSubmitShipping = useCallback((data) => {
+    localStorage.setItem("shippingInfo", JSON.stringify(data));
+
     setStep(2);
   }, []);
 

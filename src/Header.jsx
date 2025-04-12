@@ -26,7 +26,8 @@ function Header() {
         {/* Welcome Message - Mobile View (as in my previous version) */}
         {session?.user?.email && (
           <div className="text-xs font-medium text-gray-700 sm:hidden">
-            Welcome back, {session.user.email}
+            Welcome back,{" "}
+            {session.user?.user_metadata?.fullName || session.user.email}
           </div>
         )}
 
@@ -37,7 +38,8 @@ function Header() {
             {/* Welcome message - Desktop (as in your version) */}
             {session?.user?.email && (
               <p className="hidden max-w-[200px] truncate text-sm font-semibold text-gray-700 md:block">
-                Welcome back, {session.user.email}
+                Welcome back,{" "}
+                {session.user?.user_metadata?.fullName || session.user.email}
               </p>
             )}
             {/* Search */}

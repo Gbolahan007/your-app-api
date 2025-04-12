@@ -1,4 +1,5 @@
 import BestSellerItem from "./BestSellerItem";
+
 import Loader from "./Loader";
 import { useProductCategory } from "./pages/useProductCategory";
 
