@@ -18,6 +18,7 @@ import {
 import toast from "react-hot-toast";
 import { useModal } from "./contexts/ModalProvider";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "./contexts/AuthContext";
 
 // Move formatter outside component to prevent recreation on each render
 const formatCurrency = (price) => {
@@ -40,6 +41,9 @@ const ProductReviews = () => (
 
 const QuantitySelector = ({ quantity, productId, onIncrease }) => {
   const dispatch = useDispatch();
+  const { session } = useAuth();
+
+  console.log(session);
 
   return (
     <div className="mb-8">
