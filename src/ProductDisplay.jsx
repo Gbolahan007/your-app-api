@@ -41,9 +41,6 @@ const ProductReviews = () => (
 
 const QuantitySelector = ({ quantity, productId, onIncrease }) => {
   const dispatch = useDispatch();
-  const { session } = useAuth();
-
-  console.log(session);
 
   return (
     <div className="mb-8">
