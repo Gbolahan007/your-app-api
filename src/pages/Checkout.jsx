@@ -6,6 +6,8 @@ import CheckoutProgress from "./checkout/CheckoutProgress";
 import ShippingForm from "./checkout/ShippingForm";
 import PaymentForm from "./checkout/PaymentForm";
 import OrderSummary from "./checkout/OrderSummary";
+import sendOrderEmail from "../utils/sendOrderEmail";
+import payWithPaystack from "../utils/payWithPaystack";
 
 const Checkout = () => {
   const cart = useSelector((state) => state.cart.cart);
@@ -71,17 +73,48 @@ const Checkout = () => {
     setStep(2);
   }, []);
 
-  const onSubmitPayment = useCallback(async (data) => {
-    setLoading(true);
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      setPaymentComplete(true);
-    } catch (error) {
-      console.error("Payment failed:", error);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+  const onSubmitPayment = useCallback(
+    async (paymentData) => {
+      console.log(paymentData);
+      setLoading(true);
+
+      const shippingInfo = JSON.parse(localStorage.getItem("shippingInfo"));
+
+      if (!shippingInfo) {
+        console.error("Shipping info is missing");
+        return;
+      }
+
+      payWithPaystack({
+        email: shippingInfo.email,
+        amount: total,
+        firstName: shippingInfo.firstName,
+        lastName: shippingInfo.lastName,
+        onSuccess: async (response) => {
+          console.log("Payment successful!", response);
+
+          try {
+            await sendOrderEmail({
+              shippingInfo,
+              cart,
+              total,
+            });
+            console.log("Order confirmation email sent!");
+          } catch (error) {
+            console.error("Failed to send order email:", error);
+          }
+
+          setPaymentComplete(true);
+          setLoading(false);
+        },
+        onClose: () => {
+          console.log("Payment closed by user");
+          setLoading(false);
+        },
+      });
+    },
+    [total, cart],
+  );
 
   // If payment is complete, show SuccessPage
   if (paymentComplete) {

@@ -24,7 +24,7 @@ function Home() {
       <Suspense fallback={<Loader />}>
         <HeroSection />
         <BrandDescription />
-        <FeaturedCategory />
+        {/* <FeaturedCategory /> */}
         <BestSeller />
         <FeatureCards />
         <ProductReviews />

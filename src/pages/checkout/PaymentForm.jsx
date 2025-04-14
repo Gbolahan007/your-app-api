@@ -13,105 +13,86 @@ const PaymentForm = ({
       onSubmit={handleSubmit(onSubmit)}
       className="rounded-lg bg-white p-6 shadow-md"
     >
-      <h2 className="mb-6 text-xl font-semibold">Payment Information</h2>
+      <h2 className="mb-6 text-xl font-semibold">Billing Information</h2>
 
-      {/* Cardholder Name */}
-      <div className="mb-6">
-        <label className="mb-2 block text-gray-600" htmlFor="cardName">
-          Cardholder Name
+      {/* First Name */}
+      <div className="mb-4">
+        <label className="mb-2 block text-gray-600" htmlFor="firstName">
+          First Name
         </label>
         <input
           type="text"
-          id="cardName"
-          className={`w-full rounded-lg border ${errors.cardName ? "border-red-500" : "border-gray-300"} p-3 focus:outline-none focus:ring-2 focus:ring-blue-500`}
-          {...register("cardName", {
-            required: "Cardholder name is required",
+          id="firstName"
+          className={`w-full rounded-lg border ${
+            errors.firstName ? "border-red-500" : "border-gray-300"
+          } p-3 focus:outline-none focus:ring-2 focus:ring-blue-500`}
+          {...register("firstName", {
+            required: "First name is required",
           })}
         />
-        {errors.cardName && (
-          <p className="mt-1 text-sm text-red-500">{errors.cardName.message}</p>
-        )}
-      </div>
-
-      {/* Card Number */}
-      <div className="mb-6">
-        <label className="mb-2 block text-gray-700" htmlFor="cardNumber">
-          Card Number
-        </label>
-        <div className="relative">
-          <input
-            type="text"
-            id="cardNumber"
-            placeholder="0000 0000 0000 0000"
-            className={`w-full rounded-lg border ${errors.cardNumber ? "border-red-500" : "border-gray-300"} p-3 pr-12 focus:outline-none focus:ring-2 focus:ring-blue-500`}
-            {...register("cardNumber", {
-              required: "Card number is required",
-              pattern: {
-                value: /^(\d{4}\s?){4}$/,
-                message: "Invalid card number format",
-              },
-            })}
-          />
-          <div className="absolute right-3 top-3 flex space-x-1">
-            <div className="h-5 w-8 rounded bg-gray-200"></div>
-            <div className="h-5 w-8 rounded bg-gray-200"></div>
-          </div>
-        </div>
-        {errors.cardNumber && (
+        {errors.firstName && (
           <p className="mt-1 text-sm text-red-500">
-            {errors.cardNumber.message}
+            {errors.firstName.message}
           </p>
         )}
       </div>
 
-      {/* Expiration Date and CVV */}
-      <div className="mb-8 grid grid-cols-2 gap-4">
-        <div>
-          <label className="mb-2 block text-gray-700" htmlFor="expDate">
-            Expiration Date
-          </label>
-          <input
-            type="text"
-            id="expDate"
-            placeholder="MM/YY"
-            className={`w-full rounded-lg border ${errors.expDate ? "border-red-500" : "border-gray-300"} p-3 focus:outline-none focus:ring-2 focus:ring-blue-500`}
-            {...register("expDate", {
-              required: "Expiration date is required",
-              pattern: {
-                value: /^(0[1-9]|1[0-2])\/([0-9]{2})$/,
-                message: "Invalid format (MM/YY)",
-              },
-            })}
-          />
-          {errors.expDate && (
-            <p className="mt-1 text-sm text-red-500">
-              {errors.expDate.message}
-            </p>
-          )}
-        </div>
-        <div>
-          <label className="mb-2 block text-gray-700" htmlFor="cvv">
-            Security Code
-          </label>
-          <input
-            type="text"
-            id="cvv"
-            placeholder="CVV"
-            className={`w-full rounded-lg border ${errors.cvv ? "border-red-500" : "border-gray-300"} p-3 focus:outline-none focus:ring-2 focus:ring-blue-500`}
-            {...register("cvv", {
-              required: "CVV is required",
-              pattern: {
-                value: /^[0-9]{3,4}$/,
-                message: "Invalid CVV format",
-              },
-            })}
-          />
-          {errors.cvv && (
-            <p className="mt-1 text-sm text-red-500">{errors.cvv.message}</p>
-          )}
-        </div>
+      {/* Last Name */}
+      <div className="mb-4">
+        <label className="mb-2 block text-gray-600" htmlFor="lastName">
+          Last Name
+        </label>
+        <input
+          type="text"
+          id="lastName"
+          className={`w-full rounded-lg border ${
+            errors.lastName ? "border-red-500" : "border-gray-300"
+          } p-3 focus:outline-none focus:ring-2 focus:ring-blue-500`}
+          {...register("lastName", {
+            required: "Last name is required",
+          })}
+        />
+        {errors.lastName && (
+          <p className="mt-1 text-sm text-red-500">{errors.lastName.message}</p>
+        )}
       </div>
 
+      {/* Email */}
+      <div className="mb-4">
+        <label className="mb-2 block text-gray-600" htmlFor="email">
+          Email Address
+        </label>
+        <input
+          type="email"
+          id="email"
+          className={`w-full rounded-lg border ${
+            errors.email ? "border-red-500" : "border-gray-300"
+          } p-3 focus:outline-none focus:ring-2 focus:ring-blue-500`}
+          {...register("email", {
+            required: "Email is required",
+            pattern: {
+              value: /^\S+@\S+$/i,
+              message: "Invalid email address",
+            },
+          })}
+        />
+        {errors.email && (
+          <p className="mt-1 text-sm text-red-500">{errors.email.message}</p>
+        )}
+      </div>
+
+      {/* Total Amount - Readonly */}
+      <div className="mb-6">
+        <label className="mb-2 block text-gray-600">Amount</label>
+        <input
+          type="text"
+          value={formatCurrency(total)}
+          disabled
+          className="w-full cursor-not-allowed rounded-lg border border-gray-300 bg-gray-100 p-3 text-gray-600"
+        />
+      </div>
+
+      {/* Buttons */}
       <div className="flex flex-col justify-between gap-4 sm:flex-row">
         <button
           type="button"
@@ -120,9 +101,10 @@ const PaymentForm = ({
         >
           Back
         </button>
+
         <button
           type="submit"
-          className="flex items-center justify-center rounded-lg bg-blue-600 px-6 py-3 text-white transition-colors hover:bg-blue-700"
+          className="flex items-center justify-center rounded-lg bg-green-600 px-6 py-3 text-white transition-colors hover:bg-green-700"
           disabled={loading}
         >
           {loading ? (
