@@ -58,7 +58,7 @@ const SignInSignUp = () => {
 
   const handleGoogleAuth = async () => {
     const { error } = await signInWithGoogle();
-    if (error) console.error("Google auth error:", error);
+    if (error) console.error("Google authentication error:", error);
   };
 
   // If user is already logged in

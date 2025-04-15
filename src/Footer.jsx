@@ -86,7 +86,7 @@ function Footer() {
 
           <div className="mt-2 flex justify-center gap-4 sm:justify-start">
             <a
-              href="https://instagram.com/yourprofile"
+              href="https://www.instagram.com/seemly_professionals?igsh=MWptMW1scDFqcG91YQ%3D%3D&utm_source=qr"
               target="_blank"
               rel="noopener noreferrer"
             >
