@@ -48,7 +48,7 @@ const Contact = () => {
             </h3>
             <div className="space-y-6">
               <a
-                href="mailto:support@nursingessentials.com"
+                href="mailto:Seemlyprofessionals@gmail.com"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group flex items-start transition-all duration-300"
@@ -59,7 +59,7 @@ const Contact = () => {
                 <div className="ml-4">
                   <p className="text-sm font-medium text-gray-900">Email</p>
                   <p className="mt-1 text-sm text-gray-600 transition-colors duration-300 group-hover:text-blue-600">
-                    support@nursingessentials.com
+                    Seemlyprofessionals@gmail.com
                   </p>
                 </div>
               </a>
@@ -82,7 +82,7 @@ const Contact = () => {
               </a>
 
               <a
-                href="https://www.instagram.com/yourpage"
+                href="https://www.instagram.com/seemly_professionals?igsh=MWptMW1scDFqcG91YQ%3D%3D&utm_source=qr"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group flex items-start transition-all duration-300"
@@ -99,7 +99,7 @@ const Contact = () => {
               </a>
 
               <a
-                href="https://www.tiktok.com/@yourpage"
+                href="https://www.tiktok.com/@seemly_profession?_t=ZM-8vYXnzwttUF&_r=1 "
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group flex items-start transition-all duration-300"
