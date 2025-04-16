@@ -1,7 +1,7 @@
 // utils/sendOrderEmail.js
 import emailjs from "emailjs-com";
 
-emailjs.init("VF_jUl7slOApRCMWh");
+emailjs.init("HUZ0GxF3GIhPzkSeU");
 
 const sendOrderEmail = async ({ shippingInfo, cart, total }) => {
   const items = cart
@@ -9,7 +9,7 @@ const sendOrderEmail = async ({ shippingInfo, cart, total }) => {
     .join("\n");
 
   const templateParams = {
-    to_email: "lawalomogbolahan08@gmail.com",
+    to_email: "seemlyprofessional@gmail.com",
     customer_email: shippingInfo.email,
     customer_name: `${shippingInfo.firstName} ${shippingInfo.lastName}`,
     address: `${shippingInfo.address}, ${shippingInfo.city}, ${shippingInfo.zipCode}, ${shippingInfo.country}`,
@@ -17,10 +17,10 @@ const sendOrderEmail = async ({ shippingInfo, cart, total }) => {
     total: `$${total.toFixed(2)}`,
   };
   return emailjs.send(
-    "service_unai1wj",
-    "template_igdzfzs",
+    "service_qt51krc",
+    "template_y48cvzo",
     templateParams,
-    "VF_jUl7slOApRCMWh",
+    "HUZ0GxF3GIhPzkSeU",
   );
 };
 
