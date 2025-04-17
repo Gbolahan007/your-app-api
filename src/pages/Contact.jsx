@@ -65,7 +65,7 @@ const Contact = () => {
               </a>
 
               <a
-                href="https://wa.me/1234567890"
+                href="https://wa.me/9031982940"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group flex items-start transition-all duration-300"
