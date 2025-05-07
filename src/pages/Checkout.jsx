@@ -1,5 +1,5 @@
 import { useState, useCallback, useMemo } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import SuccessPage from "./checkout/SuccessPage";
 import CheckoutProgress from "./checkout/CheckoutProgress";
@@ -8,12 +8,14 @@ import PaymentForm from "./checkout/PaymentForm";
 import OrderSummary from "./checkout/OrderSummary";
 import sendOrderEmail from "../utils/sendOrderEmail";
 import payWithPaystack from "../utils/payWithPaystack";
+import { clearItem } from "../cart/cartSlice";
 
 const Checkout = () => {
   const cart = useSelector((state) => state.cart.cart);
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [paymentComplete, setPaymentComplete] = useState(false);
+  const dispatch = useDispatch();
 
   // React Hook Form for shipping info
   const {
@@ -92,7 +94,7 @@ const Checkout = () => {
         lastName: shippingInfo.lastName,
         onSuccess: async (response) => {
           console.log("Payment successful!", response);
-
+          dispatch(clearItem());
           try {
             await sendOrderEmail({
               shippingInfo,

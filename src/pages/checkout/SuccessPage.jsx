@@ -1,7 +1,10 @@
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { clearItem } from "../../cart/cartSlice";
 
 const SuccessPage = ({ email, total, formatCurrency }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-gray-50 p-4">
       <div className="w-full max-w-lg rounded-lg bg-white p-8 text-center shadow-lg">
@@ -32,7 +35,10 @@ const SuccessPage = ({ email, total, formatCurrency }) => {
         <p className="font-medium text-gray-800">{email}</p>
         <button
           className="mt-8 w-full rounded-lg bg-blue-600 py-3 text-white transition-colors hover:bg-blue-700"
-          onClick={() => navigate("/products")}
+          onClick={() => {
+            navigate("/products");
+            dispatch(clearItem());
+          }}
         >
           Continue Shopping
         </button>
