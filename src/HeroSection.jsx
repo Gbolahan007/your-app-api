@@ -7,7 +7,7 @@ function HeroSection() {
   const [activeImage, setActiveImage] = useState(0);
   const [showText, setShowText] = useState(false);
 
-  const desktopImages = ["/logowwww.jpg", "/logo.webp"];
+  const desktopImages = ["/Logo-1.webp", "/Logo-2.webp"];
   const mobileImages = [
     "/badge.webp",
     "/badge-1.webp",
