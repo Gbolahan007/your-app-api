@@ -35,7 +35,6 @@ const payWithStripeCheckout = async ({
         currency: "usd",
         customer_email: email,
         customer_name: `${firstName} ${lastName}`,
-        product_name: "Your Product Name", // Add dynamic product name if needed
       }),
     });
 

@@ -1,4 +1,4 @@
-import supabase from "../../supabase";
+import supabase from "../supabase";
 
 // Sign up a new user with email, password, and full name
 export async function signup({ fullName, email, password }) {

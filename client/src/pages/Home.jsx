@@ -2,7 +2,6 @@ import { lazy, Suspense, useState } from "react";
 import Loader from "../Loader";
 import StickyButton from "../StickyButton";
 import UnderConstructionModal from "../UnderConstructionModal"; // Import the modal
-import { useAuth } from "../contexts/AuthContext";
 
 const HeroSection = lazy(() => import("../HeroSection"));
 const BrandDescription = lazy(() => import("../BrandDescription"));

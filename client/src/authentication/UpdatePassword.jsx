@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { BiLoaderAlt } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
-import { useUpdatePassword } from "../authentication/useUpdatePassword"; // Import the new hook
+import { useUpdatePassword } from "../authentication/useUpdatePassword";
 
 function UpdatePassword() {
   const navigate = useNavigate();

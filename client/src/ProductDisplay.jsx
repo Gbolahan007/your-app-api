@@ -1,24 +1,23 @@
-import Loader from "./Loader";
-import { useProduct } from "./pages/useProduct";
-import { useMoveBack } from "./hooks/useMoveBack";
-import { useRelatedProducts } from "./pages/useRelatedProduct";
-import RelatedItem from "./RelatedItem";
+import { useMemo, useState } from "react";
+import toast from "react-hot-toast";
 import {
-  AiOutlinePlus,
-  AiOutlineMinus,
   AiOutlineArrowLeft,
+  AiOutlineMinus,
+  AiOutlinePlus,
 } from "react-icons/ai";
-import { useState, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import {
   addItem,
-  increaseItemQuantity,
   decreaseItemQuantity,
+  increaseItemQuantity,
 } from "./cart/cartSlice";
-import toast from "react-hot-toast";
 import { useModal } from "./contexts/ModalProvider";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "./contexts/AuthContext";
+import { useMoveBack } from "./hooks/useMoveBack";
+import Loader from "./Loader";
+import { useProduct } from "./pages/useProduct";
+import { useRelatedProducts } from "./pages/useRelatedProduct";
+import RelatedItem from "./RelatedItem";
 
 // Move formatter outside component to prevent recreation on each render
 const formatCurrency = (price) => {

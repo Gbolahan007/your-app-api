@@ -5,6 +5,7 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import AppLayout from "./AppLayout";
 import UpdatePassword from "./authentication/UpdatePassword";
 import { AppProvider } from "./contexts/AuthContext";
+
 import { ModalProvider } from "./contexts/ModalProvider";
 import PageNotFound from "./PageNotFound";
 import About from "./pages/About";

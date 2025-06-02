@@ -1,13 +1,12 @@
 import { useForm } from "react-hook-form";
-import {
-  FaCheckCircle,
-  FaEnvelope,
-  FaPaperPlane,
-  FaInstagram,
-  FaWhatsapp,
-  FaTiktok,
-} from "react-icons/fa";
 import toast from "react-hot-toast";
+import {
+  FaEnvelope,
+  FaInstagram,
+  FaPaperPlane,
+  FaTiktok,
+  FaWhatsapp,
+} from "react-icons/fa";
 
 const Contact = () => {
   const {
