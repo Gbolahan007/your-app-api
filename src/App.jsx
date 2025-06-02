@@ -1,23 +1,22 @@
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import AppLayout from "./AppLayout";
-import Home from "./pages/Home";
-import About from "./pages/About";
-import Contact from "./pages/Contact";
-import Products from "./pages/Products";
-import PageNotFound from "./PageNotFound";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import ScrollToTop from "./ScrollTop";
-import ProductDisplay from "./ProductDisplay";
 import { Toaster } from "react-hot-toast";
-import { ModalProvider } from "./contexts/ModalProvider";
-import Checkout from "./pages/Checkout";
-import SignInSignUp from "./pages/sign up/SignInSignUp";
-import AuthCallback from "./pages/AuthCallback";
-import { AppProvider } from "./contexts/AuthContext";
-import ProtectedRoute from "./ProtectedRoute";
-import ForgotPassword from "./authentication/UpdatePassword";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import AppLayout from "./AppLayout";
 import UpdatePassword from "./authentication/UpdatePassword";
+import { AppProvider } from "./contexts/AuthContext";
+import { ModalProvider } from "./contexts/ModalProvider";
+import PageNotFound from "./PageNotFound";
+import About from "./pages/About";
+import AuthCallback from "./pages/AuthCallback";
+import Checkout from "./pages/Checkout";
+import Contact from "./pages/Contact";
+import Home from "./pages/Home";
+import Products from "./pages/Products";
+import SignInSignUp from "./pages/sign up/SignInSignUp";
+import ProductDisplay from "./ProductDisplay";
+import ProtectedRoute from "./ProtectedRoute";
+import ScrollToTop from "./ScrollTop";
 
 const queryClient = new QueryClient({
   defaultOptions: {

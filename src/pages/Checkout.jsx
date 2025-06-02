@@ -4,17 +4,17 @@ import { useForm } from "react-hook-form";
 import SuccessPage from "./checkout/SuccessPage";
 import CheckoutProgress from "./checkout/CheckoutProgress";
 import ShippingForm from "./checkout/ShippingForm";
-import PaymentForm from "./checkout/PaymentForm";
 import OrderSummary from "./checkout/OrderSummary";
 import sendOrderEmail from "../utils/sendOrderEmail";
-import payWithPaystack from "../utils/payWithPaystack";
 import { clearItem } from "../cart/cartSlice";
+import { payWithStripeCheckout } from "../utils/payWithStripe";
 
 const Checkout = () => {
   const cart = useSelector((state) => state.cart.cart);
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [paymentComplete, setPaymentComplete] = useState(false);
+  const [error, setError] = useState(null);
   const dispatch = useDispatch();
 
   // React Hook Form for shipping info
@@ -32,20 +32,6 @@ const Checkout = () => {
       city: "",
       zipCode: "",
       country: "United States",
-    },
-  });
-
-  // React Hook Form for payment info
-  const {
-    register: registerPayment,
-    handleSubmit: handleSubmitPayment,
-    formState: { errors: paymentErrors },
-  } = useForm({
-    defaultValues: {
-      cardName: "",
-      cardNumber: "",
-      expDate: "",
-      cvv: "",
     },
   });
 
@@ -71,52 +57,52 @@ const Checkout = () => {
   // Submit handlers
   const onSubmitShipping = useCallback((data) => {
     localStorage.setItem("shippingInfo", JSON.stringify(data));
-
     setStep(2);
   }, []);
 
-  const onSubmitPayment = useCallback(
-    async (paymentData) => {
-      console.log(paymentData);
-      setLoading(true);
+  const onSubmitPayment = useCallback(async () => {
+    setLoading(true);
+    setError(null);
 
-      const shippingInfo = JSON.parse(localStorage.getItem("shippingInfo"));
+    const shippingInfo = JSON.parse(localStorage.getItem("shippingInfo"));
 
-      if (!shippingInfo) {
-        console.error("Shipping info is missing");
-        return;
-      }
+    if (!shippingInfo) {
+      setError("Shipping information is missing");
+      setLoading(false);
+      return;
+    }
 
-      payWithPaystack({
-        email: shippingInfo.email,
-        amount: total,
-        firstName: shippingInfo.firstName,
-        lastName: shippingInfo.lastName,
-        onSuccess: async (response) => {
-          console.log("Payment successful!", response);
-          dispatch(clearItem());
-          try {
-            await sendOrderEmail({
-              shippingInfo,
-              cart,
-              total,
-            });
-            console.log("Order confirmation email sent!");
-          } catch (error) {
-            console.error("Failed to send order email:", error);
-          }
+    await payWithStripeCheckout({
+      email: shippingInfo.email,
+      amount: total,
+      firstName: shippingInfo.firstName,
+      lastName: shippingInfo.lastName,
+      onSuccess: async () => {
+        try {
+          await sendOrderEmail({
+            shippingInfo,
+            cart,
+            total,
+          });
+          console.log("Order confirmation email sent!");
+        } catch (error) {
+          console.error("Failed to send order email:", error);
+        }
 
-          setPaymentComplete(true);
-          setLoading(false);
-        },
-        onClose: () => {
-          console.log("Payment closed by user");
-          setLoading(false);
-        },
-      });
-    },
-    [total, cart],
-  );
+        setPaymentComplete(true);
+        setLoading(false);
+        dispatch(clearItem());
+      },
+      onClose: () => {
+        console.log("Payment closed by user");
+        setLoading(false);
+      },
+      onError: (errorMessage) => {
+        setError(errorMessage);
+        setLoading(false);
+      },
+    });
+  }, [total, cart, dispatch]);
 
   // If payment is complete, show SuccessPage
   if (paymentComplete) {
@@ -147,16 +133,25 @@ const Checkout = () => {
                 loading={loading}
               />
             ) : (
-              <PaymentForm
-                register={registerPayment}
-                errors={paymentErrors}
-                handleSubmit={handleSubmitPayment}
-                onSubmit={onSubmitPayment}
-                loading={loading}
-                total={total}
-                formatCurrency={formatCurrency}
-                setStep={setStep}
-              />
+              <div className="rounded-lg bg-white p-6 shadow-md">
+                <h2 className="mb-4 text-2xl font-semibold">Payment</h2>
+                {error && <p className="mb-4 text-red-500">{error}</p>}
+                <button
+                  onClick={onSubmitPayment}
+                  disabled={loading}
+                  className={`w-full rounded-md px-4 py-2 text-white ${
+                    loading ? "bg-gray-400" : "bg-blue-600 hover:bg-blue-700"
+                  }`}
+                >
+                  {loading ? "Processing..." : "Pay with Stripe"}
+                </button>
+                <button
+                  onClick={() => setStep(1)}
+                  className="mt-4 text-blue-600 hover:underline"
+                >
+                  Back to Shipping
+                </button>
+              </div>
             )}
           </div>
 
