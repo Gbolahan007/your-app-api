@@ -1,12 +1,30 @@
+// server.js
 require("dotenv").config();
 const express = require("express");
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const cors = require("cors");
+
 const app = express();
 
-app.use(cors({ origin: process.env.FRONTEND_DOMAIN }));
+// CORS configuration
+app.use(
+  cors({
+    origin: process.env.FRONTEND_DOMAIN || "http://localhost:5173",
+    credentials: true,
+  })
+);
+
 app.use(express.json());
 
+// Health check endpoint
+app.get("/health", (req, res) => {
+  res.json({
+    status: "Server is running",
+    timestamp: new Date().toISOString(),
+  });
+});
+
+// Create Stripe Checkout Session
 app.post("/api/create-checkout-session", async (req, res) => {
   const { amount, currency, customer_email, customer_name, product_name } =
     req.body;
@@ -42,6 +60,9 @@ app.post("/api/create-checkout-session", async (req, res) => {
       ],
       mode: "payment",
       customer_email,
+      metadata: {
+        customer_name: customer_name,
+      },
       success_url: `${process.env.DOMAIN}/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${process.env.DOMAIN}/cancel`,
     });
@@ -53,4 +74,64 @@ app.post("/api/create-checkout-session", async (req, res) => {
   }
 });
 
-app.listen(3000, () => console.log("Server running on port 3000"));
+// Webhook to handle Stripe events (optional but recommended)
+app.post(
+  "/api/webhook",
+  express.raw({ type: "application/json" }),
+  (req, res) => {
+    const sig = req.headers["stripe-signature"];
+    let event;
+
+    try {
+      event = stripe.webhooks.constructEvent(
+        req.body,
+        sig,
+        process.env.STRIPE_WEBHOOK_SECRET
+      );
+    } catch (err) {
+      console.log(`Webhook signature verification failed.`, err.message);
+      return res.status(400).send(`Webhook Error: ${err.message}`);
+    }
+
+    // Handle the event
+    switch (event.type) {
+      case "checkout.session.completed":
+        const session = event.data.object;
+        console.log("Payment succeeded:", session.id);
+        // Handle successful payment here
+        // Update your database, send confirmation emails, etc.
+        break;
+      case "checkout.session.expired":
+        console.log("Checkout session expired:", event.data.object.id);
+        break;
+      default:
+        console.log(`Unhandled event type ${event.type}`);
+    }
+
+    res.json({ received: true });
+  }
+);
+
+// Verify payment endpoint
+app.get("/api/verify-payment/:sessionId", async (req, res) => {
+  try {
+    const session = await stripe.checkout.sessions.retrieve(
+      req.params.sessionId
+    );
+    res.json({
+      status: session.payment_status,
+      customer_email: session.customer_email,
+      amount_total: session.amount_total,
+    });
+  } catch (error) {
+    console.error("Error verifying payment:", error);
+    res.status(400).json({ error: error.message });
+  }
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+  console.log(`Frontend domain: ${process.env.FRONTEND_DOMAIN}`);
+  console.log(`Domain: ${process.env.DOMAIN}`);
+});

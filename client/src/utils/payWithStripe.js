@@ -35,7 +35,7 @@ const payWithStripeCheckout = async ({
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        amount: Math.round(amount * 100), // Convert to cents and ensure integer
+        amount: Math.round(amount * 100), 
         currency: "usd",
         customer_email: email,
         customer_name: `${firstName} ${lastName}`,

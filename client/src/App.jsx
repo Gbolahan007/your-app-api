@@ -18,6 +18,8 @@ import SignInSignUp from "./pages/sign up/SignInSignUp";
 import ProductDisplay from "./ProductDisplay";
 import ProtectedRoute from "./ProtectedRoute";
 import ScrollToTop from "./ScrollTop";
+import SuccessPage from "./pages/checkout/SuccessPage";
+import CancelCheckout from "./pages/checkout/CancelCheckout";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -46,6 +48,8 @@ function App() {
                   path="/product/:category/:slug"
                   element={<ProductDisplay />}
                 />
+
+                {/* ✅ Protected routes */}
                 <Route
                   path="/checkout"
                   element={
@@ -54,11 +58,22 @@ function App() {
                     </ProtectedRoute>
                   }
                 />
+                <Route
+                  path="/success"
+                  element={
+                    <ProtectedRoute>
+                      <SuccessPage />
+                    </ProtectedRoute>
+                  }
+                />
+
+                <Route path="/cancel" element={<CancelCheckout />} />
               </Route>
-              <Route path="*" element={<PageNotFound />} />
+
               <Route path="/signup" element={<SignInSignUp />} />
               <Route path="/auth/callback" element={<AuthCallback />} />
               <Route path="/update-password" element={<UpdatePassword />} />
+              <Route path="*" element={<PageNotFound />} />
             </Routes>
           </BrowserRouter>
         </ModalProvider>

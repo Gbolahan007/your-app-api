@@ -1,28 +1,22 @@
 import { useState, useCallback, useMemo } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
-import SuccessPage from "./checkout/SuccessPage";
 import CheckoutProgress from "./checkout/CheckoutProgress";
 import ShippingForm from "./checkout/ShippingForm";
 import OrderSummary from "./checkout/OrderSummary";
-import sendOrderEmail from "../utils/sendOrderEmail";
-import { clearItem } from "../cart/cartSlice";
 import { payWithStripeCheckout } from "../utils/payWithStripe";
 
 const Checkout = () => {
   const cart = useSelector((state) => state.cart.cart);
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
-  const [paymentComplete, setPaymentComplete] = useState(false);
   const [error, setError] = useState(null);
-  const dispatch = useDispatch();
 
   // React Hook Form for shipping info
   const {
     register: registerShipping,
     handleSubmit: handleSubmitShipping,
     formState: { errors: shippingErrors },
-    watch: watchShipping,
   } = useForm({
     defaultValues: {
       firstName: "",
@@ -72,48 +66,28 @@ const Checkout = () => {
       return;
     }
 
+    // Store cart info in localStorage so success page can access it
+    localStorage.setItem("cart", JSON.stringify(cart));
+    localStorage.setItem("orderTotal", total.toString());
+
     await payWithStripeCheckout({
       email: shippingInfo.email,
       amount: total,
       firstName: shippingInfo.firstName,
       lastName: shippingInfo.lastName,
-      onSuccess: async () => {
-        try {
-          await sendOrderEmail({
-            shippingInfo,
-            cart,
-            total,
-          });
-          console.log("Order confirmation email sent!");
-        } catch (error) {
-          console.error("Failed to send order email:", error);
-        }
-
-        setPaymentComplete(true);
-        setLoading(false);
-        dispatch(clearItem());
-      },
-      onClose: () => {
-        console.log("Payment closed by user");
-        setLoading(false);
-      },
       onError: (errorMessage) => {
         setError(errorMessage);
         setLoading(false);
       },
+      onClose: () => {
+        console.log("Payment setup failed or was cancelled");
+        setLoading(false);
+      },
     });
-  }, [total, cart, dispatch]);
 
-  // If payment is complete, show SuccessPage
-  if (paymentComplete) {
-    return (
-      <SuccessPage
-        email={watchShipping("email")}
-        total={total}
-        formatCurrency={formatCurrency}
-      />
-    );
-  }
+    // Note: If payment setup is successful, user will be redirected to Stripe
+    // and won't return to this component until success/cancel page
+  }, [total, cart]);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -135,19 +109,62 @@ const Checkout = () => {
             ) : (
               <div className="rounded-lg bg-white p-6 shadow-md">
                 <h2 className="mb-4 text-2xl font-semibold">Payment</h2>
-                {error && <p className="mb-4 text-red-500">{error}</p>}
+
+                {error && (
+                  <div className="mb-4 rounded-md border border-red-200 bg-red-50 p-3">
+                    <p className="text-sm text-red-600">{error}</p>
+                  </div>
+                )}
+
+                <div className="mb-4 rounded-md border border-blue-200 bg-blue-50 p-3">
+                  <p className="text-sm text-blue-700">
+                    You&apos;ll be redirected to Stripe&apos;s secure checkout
+                    page to complete your payment.
+                  </p>
+                </div>
+
                 <button
                   onClick={onSubmitPayment}
                   disabled={loading}
-                  className={`w-full rounded-md px-4 py-2 text-white ${
-                    loading ? "bg-gray-400" : "bg-blue-600 hover:bg-blue-700"
+                  className={`w-full rounded-md px-4 py-3 font-medium text-white transition-colors ${
+                    loading
+                      ? "cursor-not-allowed bg-gray-400"
+                      : "bg-blue-600 hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                   }`}
                 >
-                  {loading ? "Processing..." : "Pay with Stripe"}
+                  {loading ? (
+                    <span className="flex items-center justify-center">
+                      <svg
+                        className="-ml-1 mr-3 h-5 w-5 animate-spin text-white"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        ></circle>
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        ></path>
+                      </svg>
+                      Processing...
+                    </span>
+                  ) : (
+                    `Pay ${formatCurrency(total)} with Stripe`
+                  )}
                 </button>
+
                 <button
                   onClick={() => setStep(1)}
-                  className="mt-4 text-blue-600 hover:underline"
+                  disabled={loading}
+                  className="mt-4 text-blue-600 hover:underline disabled:cursor-not-allowed disabled:text-gray-400"
                 >
                   Back to Shipping
                 </button>
