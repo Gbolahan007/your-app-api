@@ -1,5 +1,6 @@
 # Ignore all env files
-.env
+server/.envgit add .gitignore
+
 .env.local
 .env.*.local
 
