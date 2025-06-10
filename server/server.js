@@ -1,4 +1,3 @@
-// server.js
 require("dotenv").config();
 const express = require("express");
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
@@ -6,10 +5,31 @@ const cors = require("cors");
 
 const app = express();
 
-// CORS configuration
+// CORS configuration for production
+const allowedOrigins = [
+  process.env.FRONTEND_DOMAIN,
+  "http://localhost:5173", // Keep for local development
+  "http://localhost:3000",
+  "https://seemly.vercel.app",
+  // Add your Vercel frontend URL when you get it
+  // "https://your-app.vercel.app"
+];
+
 app.use(
   cors({
-    origin: process.env.FRONTEND_DOMAIN || "http://localhost:5173",
+    origin: function (origin, callback) {
+      // Allow requests with no origin (mobile apps, curl, etc.)
+      if (!origin) return callback(null, true);
+
+      if (
+        allowedOrigins.indexOf(origin) !== -1 ||
+        process.env.NODE_ENV === "development"
+      ) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   })
 );
@@ -17,10 +37,19 @@ app.use(
 app.use(express.json());
 
 // Health check endpoint
+app.get("/", (req, res) => {
+  res.json({
+    status: "Server is running",
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || "development",
+  });
+});
+
 app.get("/health", (req, res) => {
   res.json({
     status: "Server is running",
     timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || "development",
   });
 });
 
@@ -63,8 +92,8 @@ app.post("/api/create-checkout-session", async (req, res) => {
       metadata: {
         customer_name: customer_name,
       },
-      success_url: `${process.env.DOMAIN}/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.DOMAIN}/cancel`,
+      success_url: `${process.env.FRONTEND_DOMAIN}/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${process.env.FRONTEND_DOMAIN}/cancel`,
     });
 
     res.json({ sessionId: session.id });
@@ -74,7 +103,7 @@ app.post("/api/create-checkout-session", async (req, res) => {
   }
 });
 
-// Webhook to handle Stripe events (optional but recommended)
+// Webhook to handle Stripe events
 app.post(
   "/api/webhook",
   express.raw({ type: "application/json" }),
@@ -93,13 +122,10 @@ app.post(
       return res.status(400).send(`Webhook Error: ${err.message}`);
     }
 
-    // Handle the event
     switch (event.type) {
       case "checkout.session.completed":
         const session = event.data.object;
         console.log("Payment succeeded:", session.id);
-        // Handle successful payment here
-        // Update your database, send confirmation emails, etc.
         break;
       case "checkout.session.expired":
         console.log("Checkout session expired:", event.data.object.id);
@@ -130,8 +156,13 @@ app.get("/api/verify-payment/:sessionId", async (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-  console.log(`Frontend domain: ${process.env.FRONTEND_DOMAIN}`);
-  console.log(`Domain: ${process.env.DOMAIN}`);
-});
+
+// Only start server if not in Vercel serverless environment
+if (process.env.NODE_ENV !== "production" || !process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+    console.log(`Frontend domain: ${process.env.FRONTEND_DOMAIN}`);
+  });
+}
+
+module.exports = app;
