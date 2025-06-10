@@ -57,9 +57,6 @@ const payWithStripeCheckout = async ({
     if (error) {
       throw new Error(error.message);
     }
-
-    // Note: onSuccess won't be called here because of the redirect
-    // It will be handled by your success page after redirect
   } catch (error) {
     console.error("Error creating checkout session:", error);
     if (onError) onError(error.message);

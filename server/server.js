@@ -11,8 +11,6 @@ const allowedOrigins = [
   "http://localhost:5173", // Keep for local development
   "http://localhost:3000",
   "https://seemly.vercel.app",
-  // Add your Vercel frontend URL when you get it
-  // "https://your-app.vercel.app"
 ];
 
 app.use(

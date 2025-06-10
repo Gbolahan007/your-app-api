@@ -84,9 +84,6 @@ const Checkout = () => {
         setLoading(false);
       },
     });
-
-    // Note: If payment setup is successful, user will be redirected to Stripe
-    // and won't return to this component until success/cancel page
   }, [total, cart]);
 
   return (

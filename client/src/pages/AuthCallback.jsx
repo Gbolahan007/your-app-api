@@ -7,13 +7,12 @@ const AuthCallback = () => {
 
   useEffect(() => {
     const handleOAuthRedirect = async () => {
-      // This will parse the URL fragment and update the session
-      const { error } = await supabase.auth.getSession();
+      const { data, error } = await supabase.auth.getSessionFromUrl();
 
       if (error) {
-        console.error("Error getting session:", error.message);
+        console.error("Error getting session from URL:", error.message);
       } else {
-        // Redirect back to homepage or dashboard
+        console.log("Session data:", data);
         navigate("/home");
       }
     };
