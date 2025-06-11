@@ -24,11 +24,10 @@ const payWithStripeCheckout = async ({
     }
 
     // Get server URL from environment variable or default to localhost:3000
-    const serverUrl =
-      import.meta.env.VITE_SERVER_URL || "http://localhost:3000";
+    const serverUrl = "";
 
     // Create checkout session on your backend
-    const response = await fetch(`${serverUrl}/api/create-checkout-session`, {
+    const response = await fetch(`/api/create-checkout-session`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
