@@ -1,8 +1,6 @@
 import { loadStripe } from "@stripe/stripe-js";
 
-const stripePromise = loadStripe(
-  "pk_test_51OHG7qBqSNRl3dSZcKHRT6pMicU85CjA5Kq1Ar48uaAWNYjyXgaTSIMLaaQi0R0e1lj5SSh0ECnKHTITxvwKutCB00V0hZ27W7",
-);
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 
 const payWithStripeCheckout = async ({
   email,
@@ -23,8 +21,7 @@ const payWithStripeCheckout = async ({
       throw new Error("Invalid input parameters");
     }
 
-    // Get server URL from environment variable or default to localhost:3000
-    const serverUrl = "";
+    
 
     // Create checkout session on your backend
     const response = await fetch(`/api/create-checkout-session`, {
