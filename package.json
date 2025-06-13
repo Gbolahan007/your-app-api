@@ -1,0 +1,17 @@
+{
+  "name": "your-app-monorepo",
+  "version": "1.0.0",
+  "description": "Monorepo with client and server",
+  "scripts": {
+    "build": "cd client && npm install && npm run build",
+    "start": "cd server && npm start",
+    "dev:client": "cd client && npm run dev",
+    "dev:server": "cd server && npm run dev",
+    "install:all": "cd client && npm install && cd ../server && npm install"
+  },
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "private": true
+}
